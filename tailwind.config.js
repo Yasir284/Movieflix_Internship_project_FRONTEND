@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
+      fontFamily: {
+        "Roboto-Mono": ["Roboto Mono"],
+      },
       colors: {
         // Black
         "black-900": "#0d0d0f",
