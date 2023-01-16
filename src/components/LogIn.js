@@ -1,9 +1,15 @@
 import axios from "axios";
 import React, { useContext, useRef } from "react";
-import { MdArrowBack, MdBackHand } from "react-icons/md";
+import { MdArrowBack } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { UserContext } from "../contexts/UserContext";
+import { motion } from "framer-motion";
+
+const buttonVaritent = {
+  whileTap: { scale: 0.9 },
+  transition: { type: "spring", stiffness: 120, ease: "easeInOut" },
+};
 
 export default function LogIn() {
   const emailRef = useRef();
@@ -54,8 +60,11 @@ export default function LogIn() {
         <h1 className="my-3 text-4xl font-bold">Login</h1>
         <p className="text-sm text-gray-400">Login to access your account</p>
       </div>
+
+      {/* Login form */}
       <form onSubmit={handleLogin} className="space-y-12">
         <div className="space-y-4">
+          {/* Email */}
           <div>
             <label htmlFor="email" className="mb-2 block text-sm">
               Email address
@@ -69,6 +78,8 @@ export default function LogIn() {
               className="w-full rounded-md border border-gray-700 bg-black-500 px-3 py-2 text-gray-100"
             />
           </div>
+
+          {/* Password */}
           <div>
             <div className="mb-2 flex justify-between">
               <label htmlFor="password" className="text-sm">
@@ -85,25 +96,33 @@ export default function LogIn() {
             />
           </div>
         </div>
+
+        {/* Buttons */}
         <div className="space-y-2">
           <div className="flex flex-row items-center gap-2">
-            <NavLink
-              to={"/"}
-              className="basis-1/2 rounded-md border-2 px-8 py-3 font-semibold"
-            >
-              <button className="flex flex-row items-center justify-center gap-2 ">
-                <MdArrowBack size="1.5rem" />
+            <NavLink to={"/"} className="group basis-1/2 font-semibold">
+              <motion.div
+                {...buttonVaritent}
+                className=" mx-auto flex flex-row items-center justify-center gap-2 rounded-md border-2 px-8 py-3"
+              >
+                <MdArrowBack
+                  size="1.5rem"
+                  className="transition-all duration-300 ease-in-out group-hover:-translate-x-2"
+                />
                 <p>Back</p>
-              </button>
+              </motion.div>
             </NavLink>
 
-            <button
+            <motion.button
+              {...buttonVaritent}
               type="submit"
-              className="basis-1/2 rounded-md bg-red-500 px-8 py-3 font-semibold text-gray-900"
+              className="basis-1/2 rounded-md bg-red-500 px-8 py-3 font-semibold text-gray-900 hover:text-white active:scale-90"
             >
               Login
-            </button>
+            </motion.button>
           </div>
+
+          {/* Signup link */}
           <p className="px-6 text-center text-sm text-gray-400">
             Don't have an account yet?
             <NavLink to={"/signup"} className="text-red-500 hover:underline">
