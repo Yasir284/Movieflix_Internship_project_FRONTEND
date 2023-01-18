@@ -14,6 +14,7 @@ import LogIn from "./components/LogIn";
 import AdminSection from "./components/AdminSection";
 import MainSection from "./components/MainSection";
 import HomeSection from "./components/HomeSection";
+import ErrorPage from "./components/ErrorPage";
 
 axios.defaults.baseURL = "http://localhost:4000/api";
 axios.defaults.withCredentials = true;
@@ -47,7 +48,16 @@ function App() {
         </Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
-        <Route path="/admin" element={<AdminSection />} />
+        <Route
+          path="/admin"
+          element={
+            profile && profile.role === "ADMIN" ? (
+              <AdminSection />
+            ) : (
+              <ErrorPage />
+            )
+          }
+        />
       </Routes>
     </UserContext.Provider>
   );

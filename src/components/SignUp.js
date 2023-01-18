@@ -128,7 +128,7 @@ export default function SignUp() {
             </NavLink>
             <motion.button
               {...buttonVaritent}
-              type="button"
+              type="submit"
               className="basis-1/2 rounded-md bg-red-500 px-8 py-3 font-semibold text-gray-900 hover:text-white"
             >
               Sign up
