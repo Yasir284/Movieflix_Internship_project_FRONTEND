@@ -9,9 +9,11 @@ import {
   MdEditNote,
   MdKeyboardArrowLeft,
 } from "react-icons/md";
+import AddMovie from "./modals/AddMovie";
 
 export default function AdminSection() {
   const [movieList, setMovieList] = useState([]);
+  const [toggleAddMovie, setToggleAddMovie] = useState(false);
 
   const categoryRef = useRef();
 
@@ -53,7 +55,10 @@ export default function AdminSection() {
           <h2 className="text-2xl font-semibold leading-tight">Movies</h2>
 
           <div className="flex flex-row items-center gap-4">
-            <button className="flex flex-row items-center rounded-full bg-my-red py-2 px-4 transition-all duration-200 ease-in-out active:scale-90">
+            <button
+              onClick={() => setToggleAddMovie(true)}
+              className="flex flex-row items-center rounded-full bg-my-red py-2 px-4 transition-all duration-200 ease-in-out active:scale-90"
+            >
               <MdAdd size="1.5rem" />
               <h2>Add Movie</h2>
             </button>
@@ -181,6 +186,13 @@ export default function AdminSection() {
           </table>
         </div>
       </div>
+
+      {/* Add Movie Modal */}
+
+      <AddMovie
+        toggleAddMovie={toggleAddMovie}
+        setToggleAddMovie={setToggleAddMovie}
+      />
     </div>
   );
 }
