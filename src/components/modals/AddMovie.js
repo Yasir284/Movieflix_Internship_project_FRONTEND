@@ -25,6 +25,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
 
   const [image, setImage] = useState(null);
 
+  // Image upload
   const fileUpload = (e) => {
     console.log("hello");
     console.log(e.target.files[0]);
@@ -230,7 +231,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
                   <button
                     {...buttonVaritent}
                     type="submit"
-                    className="col-span-full flex flex-row items-center justify-center gap-2 rounded-md border-2 border-transparent bg-my-red p-2 text-white transition-all duration-200 ease-in-out hover:border-white hover:text-white lg:col-span-3"
+                    className="col-span-full flex flex-row items-center justify-center gap-2 rounded-md border-2 border-transparent bg-my-red p-2 text-white transition-all duration-200 ease-in-out hover:border-white hover:text-white"
                   >
                     Submit
                   </button>

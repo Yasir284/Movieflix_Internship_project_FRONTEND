@@ -10,6 +10,7 @@ import {
   MdKeyboardArrowLeft,
 } from "react-icons/md";
 import AddMovie from "./modals/AddMovie";
+import EditMovie from "./modals/EditMovie";
 
 export default function AdminSection() {
   const [movieList, setMovieList] = useState([]);
@@ -17,6 +18,7 @@ export default function AdminSection() {
 
   const categoryRef = useRef();
 
+  // Get movie
   const getMovies = async () => {
     try {
       const { data } = await axios.post("/movie/get");
@@ -33,6 +35,7 @@ export default function AdminSection() {
     getMovies();
   }, []);
 
+  // Filter movies based on category
   const filterMovies = () => {
     const movieData = JSON.parse(localStorage.getItem("movieData"));
     let category = categoryRef.current.value;
@@ -109,90 +112,107 @@ export default function AdminSection() {
                 <th className="p-3">Delete</th>
               </tr>
             </thead>
-
-            <tbody>
-              {movieList.length > 0
-                ? movieList.map((movie, index) => (
-                    <tr
-                      key={index}
-                      className="border-b border-gray-700 border-opacity-20 bg-gray-900"
-                    >
-                      <td className="p-3">
-                        <p>{index + 1}</p>
-                      </td>
-
-                      <td className="p-3">
-                        <p>{movie.name}</p>
-                      </td>
-
-                      <td className="p-3">
-                        <p>{movie.rating}</p>
-                      </td>
-
-                      <td className="p-3">
-                        <div className="flex flex-col items-start gap-1">
-                          <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href={movie.streamingPlatform}
-                            className="rounded-3xl bg-violet-600 py-1 px-3  text-xs transition-all duration-200 ease-in-out active:scale-90"
-                          >
-                            Platform
-                          </a>
-                          <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href={movie.image?.secure_url}
-                            className="rounded-3xl bg-blue-600 py-1 px-3 text-xs transition-all duration-200 ease-in-out active:scale-90"
-                          >
-                            Image
-                          </a>
-                          <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href={movie.trailerUrl}
-                            className="rounded-3xl bg-red-600 py-1 px-3 text-xs transition-all duration-200 ease-in-out active:scale-90"
-                          >
-                            Trailer
-                          </a>
-                        </div>
-                      </td>
-
-                      <td className="h-auto max-w-[15rem] p-3">
-                        <p>{movie.description}</p>
-                      </td>
-
-                      <td className="p-3">
-                        <p className="transition-all duration-200 ease-in-out active:scale-90">
-                          <MdEditNote
-                            size="1.75rem"
-                            className=" rounded-md bg-green-500 p-1 text-center"
-                          />
-                        </p>
-                      </td>
-
-                      <td className="p-3">
-                        <p className="transition-all duration-200 ease-in-out active:scale-90">
-                          <MdDelete
-                            size="1.75rem"
-                            className="rounded-md bg-red-500 p-1 text-center"
-                          />
-                        </p>
-                      </td>
-                    </tr>
-                  ))
-                : ""}
-            </tbody>
+            {movieList.length > 0 ? (
+              <tbody>
+                {movieList.map((movie, index) => (
+                  <TableRow movie={movie} index={index} />
+                ))}
+              </tbody>
+            ) : (
+              ""
+            )}
           </table>
         </div>
       </div>
 
       {/* Add Movie Modal */}
-
       <AddMovie
         toggleAddMovie={toggleAddMovie}
         setToggleAddMovie={setToggleAddMovie}
       />
     </div>
+  );
+}
+
+function TableRow({ movie, index }) {
+  const [toggleEditMovie, setToggleEditMovie] = useState(false);
+
+  return (
+    <tr
+      key={index}
+      className="border-b border-gray-700 border-opacity-20 bg-gray-900"
+    >
+      <td className="p-3">
+        <p>{index + 1}</p>
+      </td>
+
+      <td className="p-3">
+        <p>{movie.name}</p>
+      </td>
+
+      <td className="p-3">
+        <p>{movie.rating}</p>
+      </td>
+
+      <td className="p-3">
+        <div className="flex flex-col items-start gap-1">
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href={movie.streamingPlatform}
+            className="rounded-3xl bg-violet-600 py-1 px-3  text-xs transition-all duration-200 ease-in-out active:scale-90"
+          >
+            Platform
+          </a>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href={movie.image?.secure_url}
+            className="rounded-3xl bg-blue-600 py-1 px-3 text-xs transition-all duration-200 ease-in-out active:scale-90"
+          >
+            Image
+          </a>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href={movie.trailerUrl}
+            className="rounded-3xl bg-red-600 py-1 px-3 text-xs transition-all duration-200 ease-in-out active:scale-90"
+          >
+            Trailer
+          </a>
+        </div>
+      </td>
+
+      <td className="h-auto max-w-[15rem] p-3">
+        <p>{movie.description}</p>
+      </td>
+
+      <td className="p-3">
+        <p
+          onClick={() => setToggleEditMovie(true)}
+          className="transition-all duration-200 ease-in-out active:scale-90"
+        >
+          <MdEditNote
+            size="1.75rem"
+            className="rounded-md bg-green-500 p-1 text-center"
+          />
+        </p>
+      </td>
+
+      <td className="p-3">
+        <p className="transition-all duration-200 ease-in-out active:scale-90">
+          <MdDelete
+            size="1.75rem"
+            className="rounded-md bg-red-500 p-1 text-center"
+          />
+        </p>
+        {/*  Edit Movie Modal*/}
+        <EditMovie
+          active={toggleEditMovie}
+          movie={movie}
+          setActive={setToggleEditMovie}
+        />
+      </td>
+    </tr>
   );
 }

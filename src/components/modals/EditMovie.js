@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import axios from "axios";
@@ -15,39 +15,88 @@ const containerVaritent = {
   exit: { opacity: 0 },
 };
 
-export default function EditMovie() {
+export default function EditMovie({ active, movie, setActive }) {
+  const [name, setName] = useState(movie.name);
+  const [trailerUrl, setTrailerUrl] = useState(movie.trailerUrl);
+  const [rating, setRating] = useState(movie.rating);
+  const [category, setCategory] = useState(movie.category);
+  const [streamingPlatform, setStreamingPlatform] = useState(
+    movie.streamingPlatform
+  );
+  const [description, setDescription] = useState(movie.description);
+  const [image, setImage] = useState(null);
+
+  //   Edit movie
+  const editMovie = async (e) => {
+    e.preventDefault();
+
+    let formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("trailerUrl", trailerUrl);
+    formData.append("rating", rating);
+    formData.append("category", category);
+    formData.append("streamingPlatform", streamingPlatform);
+    formData.append("description", description);
+    formData.append("public_id", movie.image.public_id);
+
+    if (image) {
+      formData.append("movieImage", image);
+    }
+
+    console.log(formData);
+
+    try {
+      const { data } = await axios({
+        method: "put",
+        url: `/movie/update/${movie._id}`,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      console.log(data);
+
+      toast("Movie Edited successfully", { type: "success" });
+    } catch (err) {
+      console.log(err);
+
+      toast("Error in editing movie", { type: "error" });
+    }
+  };
+
   return (
     <AnimatePresence>
-      {toggleAddMovie && (
+      {active && (
         <motion.div
-          key={toggleAddMovie}
+          key={active}
           {...containerVaritent}
           className="fixed top-0 left-0 z-50 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-50 p-2 text-white backdrop-blur-sm lg:p-20"
         >
           <section className="relative rounded-md border-2 border-white bg-transparent text-gray-50">
             <button
-              onClick={handleClose}
+              onClick={() => setActive(false)}
               className="absolute top-2 right-2 transition-all duration-200 ease-in-out active:scale-90"
             >
               <MdClose size="1.5rem" />
             </button>
 
-            <form onSubmit={addMovie} encType="multipart/form-data">
+            <form onSubmit={editMovie} encType="multipart/form-data">
               <fieldset className="grid grid-cols-4 gap-6 rounded-md bg-transparent p-6 shadow-sm">
                 {/* Heading */}
                 <div className="col-span-full space-y-2 lg:col-span-1">
-                  <p className="text-2xl font-medium">Add Movie</p>
-                  <p className="text-xs">Add movie to the collection</p>
+                  <p className="text-3xl font-medium">Edit Movie</p>
+                  <p className="text-xs">Edit movie in the collection</p>
                 </div>
 
-                <div className="col-span-full grid grid-cols-6 gap-4 lg:col-span-3">
+                <div className="col-span-full grid grid-cols-6 gap-4 text-base lg:col-span-3">
                   {/* Movie name */}
                   <div className="col-span-full">
                     <label htmlFor="name" className="text-sm">
-                      * Name :
+                      Name :
                     </label>
                     <input
-                      ref={nameRef}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       name="name"
                       type="text"
                       placeholder="Movie name"
@@ -61,7 +110,8 @@ export default function EditMovie() {
                       Trailer link :
                     </label>
                     <input
-                      ref={trailerRef}
+                      value={trailerUrl}
+                      onChange={(e) => setTrailerUrl(e.target.value)}
                       name="trailerUrl"
                       type="url"
                       placeholder="https://..."
@@ -72,10 +122,11 @@ export default function EditMovie() {
                   {/* Streaming platform */}
                   <div className="col-span-full sm:col-span-3">
                     <label htmlFor="streamingPlatform" className="text-sm">
-                      * Streaming platform :
+                      Streaming platform :
                     </label>
                     <input
-                      ref={platformRef}
+                      value={streamingPlatform}
+                      onChange={(e) => setStreamingPlatform(e.target.value)}
                       name="streamingPlatform"
                       type="url"
                       placeholder="Enter streaming platform link..."
@@ -86,12 +137,13 @@ export default function EditMovie() {
                   {/* Category */}
                   <div className="col-span-full sm:col-span-2">
                     <label htmlFor="category" className="text-sm">
-                      * Category :{" "}
+                      Category :{" "}
                     </label>
                     <select
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
                       name="category"
                       className="w-full rounded-md border-gray-700 p-2 text-black"
-                      ref={categoryRef}
                     >
                       <option value="ACTION">ACTION</option>
                       <option value="COMEDY">COMEDY</option>
@@ -107,10 +159,11 @@ export default function EditMovie() {
                   {/* Rating */}
                   <div className="col-span-full sm:col-span-2">
                     <label htmlFor="rating" className="text-sm">
-                      * Rating :
+                      Rating :
                     </label>
                     <input
-                      ref={ratingRef}
+                      value={rating}
+                      onChange={(e) => setRating(e.target.value)}
                       name="rating"
                       type="text"
                       placeholder="Enter IMDB rating"
@@ -123,9 +176,9 @@ export default function EditMovie() {
                     <label htmlFor="movieImage" className="text-sm">
                       Upload image :
                     </label>
-                    <div className="rounded-md bg-white p-2">
+                    <div className="rounded-md bg-white p-1">
                       <input
-                        onChange={fileUpload}
+                        onChange={(e) => setImage(e.target.files[0])}
                         name="movieImage"
                         type="file"
                         className="w-full border-gray-700 text-sm text-gray-900"
@@ -136,10 +189,11 @@ export default function EditMovie() {
                   {/* Description */}
                   <div className="col-span-full">
                     <label htmlFor="description" className="text-sm">
-                      * Description :
+                      Description :
                     </label>
                     <textarea
-                      ref={descriptionRef}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
                       name="description"
                       placeholder="Enter movie description..."
                       cols="30"
@@ -149,13 +203,13 @@ export default function EditMovie() {
                   </div>
 
                   {/* Buttons */}
-                  <button
+                  <motion.button
                     {...buttonVaritent}
                     type="submit"
-                    className="col-span-full flex flex-row items-center justify-center gap-2 rounded-md border-2 border-transparent bg-my-red p-2 text-white transition-all duration-200 ease-in-out hover:border-white hover:text-white lg:col-span-3"
+                    className="col-span-full flex flex-row items-center justify-center gap-2 rounded-md border-2 border-transparent bg-my-red p-2 text-base text-white transition-all duration-200 ease-in-out hover:border-white hover:text-white"
                   >
-                    Submit
-                  </button>
+                    Edit Movie
+                  </motion.button>
                 </div>
               </fieldset>
             </form>
