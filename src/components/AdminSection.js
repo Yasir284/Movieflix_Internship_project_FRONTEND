@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { DELETE_MOVIE, FILTER_MOVIES, GET_MOVIES } from "../utils/action.types";
 import {
   MdAdd,
   MdDelete,
@@ -11,20 +11,23 @@ import {
 } from "react-icons/md";
 import AddMovie from "./modals/AddMovie";
 import EditMovie from "./modals/EditMovie";
+import { MovieContext } from "../contexts/MovieContext";
 
 export default function AdminSection() {
-  const [movieList, setMovieList] = useState([]);
   const [toggleAddMovie, setToggleAddMovie] = useState(false);
+  const { movies, dispatch } = useContext(MovieContext);
 
   const categoryRef = useRef();
 
-  // Get movie
-  const getMovies = async () => {
+  const getMovies = async (dispatch) => {
     try {
       const { data } = await axios.post("/movie/get");
       console.log("data: ", data);
-      localStorage.setItem("movieData", JSON.stringify(data.movies));
-      setMovieList(data.movies);
+
+      dispatch({
+        type: GET_MOVIES,
+        payload: { movies: data.movies },
+      });
     } catch (err) {
       console.log(err);
       toast("Error in getting movies", { type: "error" });
@@ -32,22 +35,30 @@ export default function AdminSection() {
   };
 
   useEffect(() => {
-    getMovies();
-  }, []);
+    getMovies(dispatch);
+  }, [dispatch]);
+  console.log("movies: ", movies);
 
   // Filter movies based on category
-  const filterMovies = () => {
-    const movieData = JSON.parse(localStorage.getItem("movieData"));
-    let category = categoryRef.current.value;
-    console.log(category);
-    if (category === "ALL") {
-      setMovieList(movieData);
-      return console.log("movieList:", movieList, "movieData:", movieData);
+  const filterMovies = async () => {
+    const category = categoryRef.current.value;
+
+    try {
+      const { data } =
+        category === "ALL"
+          ? await axios.post("/movie/get")
+          : await axios.post("/movie/get", { categories: [category] });
+
+      console.log("data: ", data);
+
+      dispatch({
+        type: GET_MOVIES,
+        payload: { movies: data.movies },
+      });
+    } catch (err) {
+      console.log(err);
+      toast("Error in getting movies", { type: "error" });
     }
-    let filter = movieData.filter((list) => list.category === category);
-    console.log(filter);
-    setMovieList(filter || []);
-    console.log(movieList);
   };
 
   return (
@@ -112,10 +123,15 @@ export default function AdminSection() {
                 <th className="p-3">Delete</th>
               </tr>
             </thead>
-            {movieList.length > 0 ? (
+            {movies && movies.length > 0 ? (
               <tbody>
-                {movieList.map((movie, index) => (
-                  <TableRow movie={movie} index={index} />
+                {movies.map((movie, index) => (
+                  <tr
+                    key={index}
+                    className="border-b border-gray-700 border-opacity-20 bg-gray-900"
+                  >
+                    <TableColumns movie={movie} index={index} />
+                  </tr>
                 ))}
               </tbody>
             ) : (
@@ -134,26 +150,45 @@ export default function AdminSection() {
   );
 }
 
-function TableRow({ movie, index }) {
+// Table row
+function TableColumns({ movie, index }) {
   const [toggleEditMovie, setToggleEditMovie] = useState(false);
+  const { dispatch } = useContext(MovieContext);
+
+  // Delete movie
+  const deleteMovie = async () => {
+    try {
+      const { data } = await axios.put(`/movie/delete/${movie._id}`, {
+        public_id: movie.image.public_id,
+      });
+
+      console.log(data);
+
+      dispatch({
+        type: DELETE_MOVIE,
+        payload: {
+          id: movie._id,
+        },
+      });
+
+      toast("Movie Deleted", { type: "info" });
+    } catch (err) {
+      console.log(err);
+      toast("Failed to delete the movie", { type: "error" });
+    }
+  };
 
   return (
-    <tr
-      key={index}
-      className="border-b border-gray-700 border-opacity-20 bg-gray-900"
-    >
+    <>
       <td className="p-3">
         <p>{index + 1}</p>
       </td>
-
       <td className="p-3">
         <p>{movie.name}</p>
       </td>
-
       <td className="p-3">
         <p>{movie.rating}</p>
       </td>
-
       <td className="p-3">
         <div className="flex flex-col items-start gap-1">
           <a
@@ -182,11 +217,9 @@ function TableRow({ movie, index }) {
           </a>
         </div>
       </td>
-
       <td className="h-auto max-w-[15rem] p-3">
         <p>{movie.description}</p>
       </td>
-
       <td className="p-3">
         <p
           onClick={() => setToggleEditMovie(true)}
@@ -198,21 +231,25 @@ function TableRow({ movie, index }) {
           />
         </p>
       </td>
-
       <td className="p-3">
-        <p className="transition-all duration-200 ease-in-out active:scale-90">
+        <p
+          onClick={deleteMovie}
+          className="transition-all duration-200 ease-in-out active:scale-90"
+        >
           <MdDelete
             size="1.75rem"
             className="rounded-md bg-red-500 p-1 text-center"
           />
         </p>
         {/*  Edit Movie Modal*/}
-        <EditMovie
-          active={toggleEditMovie}
-          movie={movie}
-          setActive={setToggleEditMovie}
-        />
+        {toggleEditMovie && (
+          <EditMovie
+            active={toggleEditMovie}
+            movie={movie}
+            setActive={setToggleEditMovie}
+          />
+        )}
       </td>
-    </tr>
+    </>
   );
 }

@@ -3,9 +3,11 @@ import "./App.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { UserContext } from "./contexts/UserContext";
+import { MovieContext } from "./contexts/MovieContext";
 import { Routes, Route } from "react-router-dom";
+import MovieReducer from "./contexts/MovieReducer";
 
 // Components
 import { Navbar } from "./components/Navbar";
@@ -21,6 +23,7 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const [profile, setProfile] = useState(null);
+  const [movies, dispatch] = useReducer(MovieReducer, []);
 
   const getProfile = async () => {
     try {
@@ -42,23 +45,26 @@ function App() {
       <ToastContainer position="top-right" theme="dark" autoClose="1000" />
       <Navbar />
 
-      <Routes>
-        <Route path="/" element={<MainSection />}>
-          <Route path="home" element={<HomeSection />} />
-        </Route>
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route
-          path="/admin"
-          element={
-            profile && profile.role === "ADMIN" ? (
-              <AdminSection />
-            ) : (
-              <ErrorPage />
-            )
-          }
-        />
-      </Routes>
+      <MovieContext.Provider value={{ movies, dispatch }}>
+        <Routes>
+          <Route path="/" element={<MainSection />}>
+            <Route path="home" element={<HomeSection />} />
+          </Route>
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<LogIn />} />
+
+          <Route
+            path="/admin"
+            element={
+              profile && profile.role === "ADMIN" ? (
+                <AdminSection />
+              ) : (
+                <ErrorPage />
+              )
+            }
+          />
+        </Routes>
+      </MovieContext.Provider>
     </UserContext.Provider>
   );
 }

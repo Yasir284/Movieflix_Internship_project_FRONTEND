@@ -1,8 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { MovieContext } from "../../contexts/MovieContext";
+import { ADD_MOVIE } from "../../utils/action.types";
 
 const buttonVaritent = {
   whileTap: { scale: 0.9 },
@@ -16,12 +18,15 @@ const containerVaritent = {
 };
 
 export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
+  const { dispatch } = useContext(MovieContext);
+
   const nameRef = useRef();
   const trailerRef = useRef();
   const ratingRef = useRef();
   const categoryRef = useRef();
   const platformRef = useRef();
   const descriptionRef = useRef();
+  const imageRef = useRef();
 
   const [image, setImage] = useState(null);
 
@@ -69,14 +74,16 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
+      console.log(data);
+
+      dispatch({ type: ADD_MOVIE, payload: { movie: data.movie } });
 
       nameRef.current.value = "";
       trailerRef.current.value = "";
       ratingRef.current.value = "";
       platformRef.current.value = "";
       descriptionRef.current.value = "";
-
-      console.log(data);
+      imageRef.current.value = "";
 
       toast("Movie added successfully", { type: "success" });
     } catch (err) {
@@ -91,6 +98,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
     ratingRef.current.value = "";
     platformRef.current.value = "";
     descriptionRef.current.value = "";
+    imageRef.current.value = "";
 
     setToggleAddMovie(false);
   };
@@ -101,17 +109,20 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
         <motion.div
           key={toggleAddMovie}
           {...containerVaritent}
-          className="fixed top-0 left-0 z-50 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-50 p-2 text-white backdrop-blur-sm lg:p-20"
+          className="fixed top-0 left-0 z-50 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-50 p-2 text-white backdrop-blur-sm"
         >
-          <section className="relative rounded-md border-2 border-white bg-transparent text-gray-50">
-            <button
-              onClick={handleClose}
-              className="absolute top-2 right-2 transition-all duration-200 ease-in-out active:scale-90"
+          <section className="flex items-center justify-center">
+            <form
+              onSubmit={addMovie}
+              className="relative rounded-md border-2 border-white bg-transparent text-gray-50"
+              encType="multipart/form-data"
             >
-              <MdClose size="1.5rem" />
-            </button>
-
-            <form onSubmit={addMovie} encType="multipart/form-data">
+              <button
+                onClick={handleClose}
+                className="absolute top-2 right-2 transition-all duration-200 ease-in-out active:scale-90"
+              >
+                <MdClose size="1.5rem" />
+              </button>
               <fieldset className="grid grid-cols-4 gap-6 rounded-md bg-transparent p-6 shadow-sm">
                 {/* Heading */}
                 <div className="col-span-full space-y-2 lg:col-span-1">
@@ -123,7 +134,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
                   {/* Movie name */}
                   <div className="col-span-full">
                     <label htmlFor="name" className="text-sm">
-                      * Name :
+                      <span className="text-red-600">*</span> Name :
                     </label>
                     <input
                       ref={nameRef}
@@ -151,7 +162,8 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
                   {/* Streaming platform */}
                   <div className="col-span-full sm:col-span-3">
                     <label htmlFor="streamingPlatform" className="text-sm">
-                      * Streaming platform :
+                      <span className="text-red-600">*</span> Streaming platform
+                      :
                     </label>
                     <input
                       ref={platformRef}
@@ -165,7 +177,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
                   {/* Category */}
                   <div className="col-span-full sm:col-span-2">
                     <label htmlFor="category" className="text-sm">
-                      * Category :{" "}
+                      <span className="text-red-600">*</span> Category :{" "}
                     </label>
                     <select
                       name="category"
@@ -186,7 +198,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
                   {/* Rating */}
                   <div className="col-span-full sm:col-span-2">
                     <label htmlFor="rating" className="text-sm">
-                      * Rating :
+                      <span className="text-red-600">*</span> Rating :
                     </label>
                     <input
                       ref={ratingRef}
@@ -204,6 +216,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
                     </label>
                     <div className="rounded-md bg-white p-2">
                       <input
+                        ref={imageRef}
                         onChange={fileUpload}
                         name="movieImage"
                         type="file"
@@ -215,7 +228,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
                   {/* Description */}
                   <div className="col-span-full">
                     <label htmlFor="description" className="text-sm">
-                      * Description :
+                      <span className="text-red-600">*</span> Description :
                     </label>
                     <textarea
                       ref={descriptionRef}
@@ -228,13 +241,13 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
                   </div>
 
                   {/* Buttons */}
-                  <button
+                  <motion.button
                     {...buttonVaritent}
                     type="submit"
                     className="col-span-full flex flex-row items-center justify-center gap-2 rounded-md border-2 border-transparent bg-my-red p-2 text-white transition-all duration-200 ease-in-out hover:border-white hover:text-white"
                   >
                     Submit
-                  </button>
+                  </motion.button>
                 </div>
               </fieldset>
             </form>
