@@ -118,6 +118,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
               encType="multipart/form-data"
             >
               <button
+                type="button"
                 onClick={handleClose}
                 className="absolute top-2 right-2 transition-all duration-200 ease-in-out active:scale-90"
               >

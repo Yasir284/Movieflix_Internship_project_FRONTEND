@@ -50,15 +50,21 @@ export default function Profile() {
       <ul
         className={`${
           active ? "flex" : "hidden"
-        } absolute top-14 flex-col bg-black-600`}
+        } absolute top-14 right-0 w-44 flex-col items-start justify-center rounded-md border bg-black text-sm`}
       >
-        <li>
+        <li
+          onClick={() => setActive(false)}
+          className="w-full rounded-sm border-b-2 border-black-400 px-4 py-2 transition-all duration-200 ease-in-out hover:bg-red-500"
+        >
+          <NavLink to={"/admin"}>Admin dashboard</NavLink>
+        </li>
+        <li className="group w-full rounded-sm px-4 py-2 transition-all duration-200 ease-in-out hover:bg-red-500">
           <button
             onClick={handleLogout}
-            className="flex flex-row items-center justify-start gap-2 border-b-2 px-4 py-2 hover:bg-black-500"
+            className="flex flex-row items-center justify-start gap-2 "
           >
             <p>Log out</p>
-            <MdLogout />
+            <MdLogout className="transition-all duration-200 ease-in-out group-hover:translate-x-2" />
           </button>
         </li>
       </ul>

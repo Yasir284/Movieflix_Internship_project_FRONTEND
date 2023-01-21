@@ -90,6 +90,7 @@ export default function EditMovie({ active, movie, setActive }) {
             encType="multipart/form-data"
           >
             <button
+              type="button"
               onClick={() => {
                 setActive(false);
                 imageRef.current.value = "";

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
-import { DELETE_MOVIE, FILTER_MOVIES, GET_MOVIES } from "../utils/action.types";
+import { DELETE_MOVIE, GET_MOVIES } from "../utils/action.types";
 import {
   MdAdd,
   MdDelete,
