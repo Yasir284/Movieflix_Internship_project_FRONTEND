@@ -3,6 +3,7 @@ import {
   ADD_MOVIE,
   DELETE_MOVIE,
   EDIT_MOVIE,
+  SEARCH_MOVIE,
 } from "../utils/action.types";
 
 const MovieReducer = (state, action) => {
@@ -31,6 +32,11 @@ const MovieReducer = (state, action) => {
         }
         return e;
       });
+      break;
+
+    // Edit movies
+    case SEARCH_MOVIE:
+      state = action.payload.movies;
       break;
 
     default:

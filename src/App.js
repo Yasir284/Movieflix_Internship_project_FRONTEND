@@ -7,7 +7,7 @@ import { useEffect, useReducer, useState } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { MovieContext } from "./contexts/MovieContext";
 import { Routes, Route } from "react-router-dom";
-import MovieReducer from "./contexts/MovieReducer";
+import MovieReducer from "./reducers/MovieReducer";
 
 // Components
 import { Navbar } from "./components/Navbar";

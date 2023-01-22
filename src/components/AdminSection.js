@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
-import { DELETE_MOVIE, GET_MOVIES } from "../utils/action.types";
+import { DELETE_MOVIE, GET_MOVIES, SEARCH_MOVIE } from "../utils/action.types";
 import {
   MdAdd,
   MdDelete,
@@ -12,11 +12,13 @@ import {
 import AddMovie from "./modals/AddMovie";
 import EditMovie from "./modals/EditMovie";
 import { MovieContext } from "../contexts/MovieContext";
+import { BiSearchAlt } from "react-icons/bi";
 
 export default function AdminSection() {
   const [toggleAddMovie, setToggleAddMovie] = useState(false);
   const { movies, dispatch } = useContext(MovieContext);
 
+  const searchRef = useRef();
   const categoryRef = useRef();
 
   const getMovies = async (dispatch) => {
@@ -40,9 +42,7 @@ export default function AdminSection() {
   console.log("movies: ", movies);
 
   // Filter movies based on category
-  const filterMovies = async () => {
-    const category = categoryRef.current.value;
-
+  const filterMovies = async (category) => {
     try {
       const { data } =
         category === "ALL"
@@ -61,51 +61,103 @@ export default function AdminSection() {
     }
   };
 
+  // Search movies
+  const queryMovies = async (e) => {
+    e.preventDefault();
+    const category = categoryRef.current.value;
+    const search = searchRef.current.value;
+
+    if (search === "" || !search) {
+      return filterMovies(categoryRef.current.value);
+    }
+
+    try {
+      const { data } = await axios.post(
+        `/movie/search/${search ? search : "~"}`,
+        { categories: category === "ALL" ? [] : [category] }
+      );
+
+      dispatch({
+        type: SEARCH_MOVIE,
+        payload: { movies: data.movies },
+      });
+    } catch (err) {
+      console.log(err);
+      toast("Movie not found", { type: "info" });
+    }
+  };
+
   return (
     <div>
-      <div className="container mx-auto my-4 p-2 text-gray-100 sm:p-4">
+      <div className="container mx-auto mb-4 p-2 text-gray-100 sm:p-4">
         {/* Heading */}
-        <div className="mb-4 flex flex-row items-center justify-between">
-          <h2 className="text-2xl font-semibold leading-tight">Movies</h2>
+        <div className="w-full flex-col items-center justify-center">
+          <h2 className="mb-6 text-center text-3xl font-semibold leading-tight">
+            ALL MOVIES
+          </h2>
+          <div className="mb-4 flex flex-row items-center justify-between">
+            <div className="flex w-full flex-row items-center justify-between">
+              <NavLink to={"/"} className="">
+                <div className="group flex flex-row items-center gap-2 rounded-3xl border-2 border-black-400 py-2 px-3 text-black-400 transition-all duration-200 ease-in-out hover:border-white hover:text-white">
+                  <MdKeyboardArrowLeft
+                    size="1.5rem"
+                    className="transition-all duration-200 ease-in-out group-hover:-translate-x-2"
+                  />
+                  <p title="Back to homepage">Homepage</p>
+                </div>
+              </NavLink>
 
-          <div className="flex flex-row items-center gap-4">
-            <button
-              onClick={() => setToggleAddMovie(true)}
-              className="flex flex-row items-center rounded-full bg-my-red py-2 px-4 transition-all duration-200 ease-in-out active:scale-90"
-            >
-              <MdAdd size="1.5rem" />
-              <h2>Add Movie</h2>
-            </button>
+              <div className="flex flex-row gap-2">
+                {/* Search */}
+                <form onSubmit={queryMovies} className="relative rounded-full">
+                  <span className="absolute inset-y-0 left-0 flex items-center py-4">
+                    <button
+                      type="submit"
+                      className="p-2 focus:outline-none focus:ring"
+                    >
+                      <BiSearchAlt size="1.5rem" className="text-black-400" />
+                    </button>
+                  </span>
+                  <input
+                    ref={searchRef}
+                    type="search"
+                    name="Search"
+                    placeholder="Search..."
+                    className="rounded-full border-2 border-black-400 bg-black-900 py-2 pl-10 text-sm text-gray-100 focus:bg-black"
+                  />
+                </form>
 
-            <form className="rounded-full bg-blue-500 px-4 py-2">
-              <label htmlFor="category">Category : </label>
-              <select
-                name="category"
-                className="rounded-full text-xs text-black"
-                onChange={filterMovies}
-                ref={categoryRef}
-              >
-                <option value="ALL">ALL</option>
-                <option value="ACTION">ACTION</option>
-                <option value="COMEDY">COMEDY</option>
-                <option value="ROMANCE">ROMANCE</option>
-                <option value="SCI-FI">SCI-FI</option>
-                <option value="HORROR">HORROR</option>
-                <option value="CRIME THRILLER">CRIME THRILLER</option>
-                <option value="ADVENTURE">ADVENTURE</option>
-                <option value="REAL LIFE">REAL LIFE</option>
-              </select>
-            </form>
+                {/* Category */}
+                <form className="rounded-full bg-blue-500 px-4 py-2">
+                  <label htmlFor="category">Category : </label>
+                  <select
+                    name="category"
+                    className="rounded-full text-xs text-black"
+                    onChange={queryMovies}
+                    ref={categoryRef}
+                  >
+                    <option value="ALL">ALL</option>
+                    <option value="ACTION">ACTION</option>
+                    <option value="COMEDY">COMEDY</option>
+                    <option value="ROMANCE">ROMANCE</option>
+                    <option value="SCI-FI">SCI-FI</option>
+                    <option value="HORROR">HORROR</option>
+                    <option value="CRIME THRILLER">CRIME THRILLER</option>
+                    <option value="ADVENTURE">ADVENTURE</option>
+                    <option value="REAL LIFE">REAL LIFE</option>
+                  </select>
+                </form>
 
-            <NavLink to={"/"} className="inline-block">
-              <div className="group flex flex-row items-center gap-2 rounded-3xl border-2 border-black-400 py-2 px-3 text-black-400 transition-all duration-200 ease-in-out hover:border-white hover:text-white">
-                <MdKeyboardArrowLeft
-                  size="1.5rem"
-                  className="transition-all duration-200 ease-in-out group-hover:-translate-x-2"
-                />
-                <p title="Back to homepage">Homepage</p>
+                {/* Add movie */}
+                <button
+                  onClick={() => setToggleAddMovie(true)}
+                  className="flex flex-row items-center rounded-full bg-my-red py-2 px-4 transition-all duration-200 ease-in-out active:scale-90"
+                >
+                  <MdAdd size="1.5rem" />
+                  <h2>Add Movie</h2>
+                </button>
               </div>
-            </NavLink>
+            </div>
           </div>
         </div>
 
