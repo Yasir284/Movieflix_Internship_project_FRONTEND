@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useReducer, useState } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { MovieContext } from "./contexts/MovieContext";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import MovieReducer from "./reducers/MovieReducer";
 
 // Components
@@ -47,7 +47,8 @@ function App() {
 
       <MovieContext.Provider value={{ movies, dispatch }}>
         <Routes>
-          <Route path="/" element={<MainSection />}>
+          <Route path="/" element={<Navigate replace to={"/movies"} />} />
+          <Route path="/movies" element={<MainSection />}>
             <Route path="home" element={<HomeSection />} />
           </Route>
           <Route path="/signup" element={<SignUp />} />
