@@ -15,6 +15,9 @@ module.exports = {
         // Red
         "my-red": "#eb1c24",
       },
+      scale: {
+        "-100": "-1",
+      },
     },
   },
   plugins: [],
