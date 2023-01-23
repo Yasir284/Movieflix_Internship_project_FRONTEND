@@ -32,6 +32,7 @@ function App() {
     try {
       const { data } = await axios.get("/auth/profile");
       setProfile(data.user);
+      console.log("Profile : ", profile);
     } catch (err) {
       console.log(err.message);
       toast("Login/Signup first", { type: "warning" });

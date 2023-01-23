@@ -123,7 +123,7 @@ export default function AdminSection() {
                     type="search"
                     name="Search"
                     placeholder="Search..."
-                    className="rounded-full border-2 border-black-400 bg-black-900 py-2 pl-10 text-sm text-gray-100 focus:bg-black"
+                    className="rounded-full border-2 border-black-400 bg-black-900 py-2 pr-3 pl-10 text-sm text-gray-100 focus:bg-black"
                   />
                 </form>
 

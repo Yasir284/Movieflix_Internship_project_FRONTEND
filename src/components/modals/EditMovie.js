@@ -69,6 +69,8 @@ export default function EditMovie({ active, movie, setActive }) {
       });
 
       toast("Movie Edited successfully", { type: "success" });
+
+      setActive(false);
     } catch (err) {
       console.log(err);
 
