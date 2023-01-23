@@ -97,7 +97,7 @@ export default function AdminSection() {
           </h2>
           <div className="mb-4 flex flex-row items-center justify-between">
             <div className="flex w-full flex-row items-center justify-between">
-              <NavLink to={"/"} className="">
+              <NavLink to={"/home"} className="">
                 <div className="group flex flex-row items-center gap-2 rounded-3xl border-2 border-black-400 py-2 px-3 text-black-400 transition-all duration-200 ease-in-out hover:border-white hover:text-white">
                   <MdKeyboardArrowLeft
                     size="1.5rem"

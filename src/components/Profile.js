@@ -17,7 +17,7 @@ export default function Profile() {
       console.log("Logged out: ", data);
       setProfile(null);
       setActive(false);
-      navigate("/");
+      navigate("/home");
     } catch (err) {
       console.log(err);
       toast("Something went wrong", { type: "error" });
@@ -31,11 +31,14 @@ export default function Profile() {
           onClick={() => setActive(!active)}
           className="flex cursor-pointer flex-row items-center justify-center gap-4 rounded-full border-2 border-transparent p-1 transition-all duration-200 ease-in-out hover:border-white active:scale-95"
         >
-          <button className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-red-500 text-lg font-bold">
+          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-my-red text-lg font-bold">
             {profile.name && profile?.name[0].toUpperCase()}
           </button>
 
-          <p className="mr-4">{profile.name}</p>
+          <div className="">
+            <p className="leading-none">{profile.name}</p>
+            <span className="text-xs text-black-400">{profile.email}</span>
+          </div>
         </div>
       ) : (
         <NavLink

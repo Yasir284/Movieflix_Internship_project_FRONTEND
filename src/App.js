@@ -17,6 +17,9 @@ import AdminSection from "./components/AdminSection";
 import MainSection from "./components/MainSection";
 import HomeSection from "./components/HomeSection";
 import ErrorPage from "./components/ErrorPage";
+import Wishlist from "./components/Wishlist";
+import TopRated from "./components/TopRated";
+import { GET_MOVIES } from "./utils/action.types";
 
 axios.defaults.baseURL = "http://localhost:4000/api";
 axios.defaults.withCredentials = true;
@@ -35,11 +38,29 @@ function App() {
     }
   };
 
+  const getMovies = async (dispatch) => {
+    try {
+      const { data } = await axios.post("/movie/get");
+      console.log("data: ", data);
+
+      dispatch({
+        type: GET_MOVIES,
+        payload: { movies: data.movies },
+      });
+    } catch (err) {
+      console.log(err);
+      toast("Error in getting movies", { type: "error" });
+    }
+  };
+
+  useEffect(() => {
+    getMovies(dispatch);
+  }, [dispatch]);
+
   useEffect(() => {
     getProfile();
   }, []);
 
-  console.log("Profile: ", profile);
   return (
     <UserContext.Provider value={{ profile, setProfile }}>
       <ToastContainer position="top-right" theme="dark" autoClose="1000" />
@@ -47,9 +68,11 @@ function App() {
 
       <MovieContext.Provider value={{ movies, dispatch }}>
         <Routes>
-          <Route path="/" element={<Navigate replace to={"/movies"} />} />
-          <Route path="/movies" element={<MainSection />}>
-            <Route path="home" element={<HomeSection />} />
+          <Route path="/" element={<Navigate replace to={"/home"} />} />
+          <Route path="/home" element={<MainSection />}>
+            <Route index element={<HomeSection />} />
+            <Route path="wishlist" element={<Wishlist />} />
+            <Route path="top-rated" element={<TopRated />} />
           </Route>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
