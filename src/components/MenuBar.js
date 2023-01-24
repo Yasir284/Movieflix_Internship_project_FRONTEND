@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -18,7 +18,7 @@ import {
 } from "react-icons/md";
 import { BiSearchAlt, BiMenu } from "react-icons/bi";
 
-import { GET_MOVIES } from "../utils/action.types";
+import { GET_MOVIES, SEARCH_MOVIE } from "../utils/action.types";
 import { toast } from "react-toastify";
 import { AnimatePresence, motion } from "framer-motion";
 import Profile from "./Profile";
@@ -51,6 +51,8 @@ export default function MenuBar() {
   const [categories, setCategories] = useState([]);
   console.log("categories:", categories);
   const { dispatch } = useContext(MovieContext);
+
+  const searchRef = useRef();
 
   const navigate = useNavigate();
 
@@ -115,28 +117,37 @@ export default function MenuBar() {
 
   const [activeId, setAcitveId] = useState(menuList[0].id);
 
-  // const selectCategory = (category) => {
-
-  // };
-
   // Get movies based on categories
   const getMovies = async (category) => {
+    const search = searchRef.current.value;
+
+    let newCategories;
+
+    // if (category) {
+    //   if (categories.includes(category)) {
+    //     newCategories = categories.filter((e) => e !== category);
+    //     console.log("newCategories", newCategories);
+    //     setCategories(newCategories);
+    //   } else {
+    //     newCategories = [...categories, category];
+    //     setCategories([...categories, category]);
+    //   }
+    // }else{
+    // newCategories =categories
+    // }
+
+    // eslint-disable-next-line no-unused-expressions
+    category
+      ? categories.includes(category)
+        ? ((newCategories = categories.filter((e) => e !== category)),
+          setCategories(newCategories))
+        : ((newCategories = [...categories, category]),
+          setCategories([...categories, category]))
+      : (newCategories = categories);
+
+    if (search) return queryMovies(newCategories);
+
     try {
-      let newCategories;
-
-      if (categories.includes(category)) {
-        newCategories = categories.filter((e) => e !== category);
-        console.log("newCategories", newCategories);
-        setCategories(newCategories);
-      } else {
-        newCategories = [...categories, category];
-        setCategories([...categories, category]);
-      }
-
-      console.log("newCategories", newCategories);
-
-      console.log("inside getMovies", categories);
-
       const { data } = await axios.post("/movie/get", {
         categories: newCategories,
       });
@@ -149,6 +160,27 @@ export default function MenuBar() {
     } catch (err) {
       console.log(err);
       toast("Error in getting movies", { type: "error" });
+    }
+  };
+
+  // Search movies
+  const queryMovies = async (categories) => {
+    const search = searchRef.current.value;
+
+    console.log("categories in queryMovies", categories);
+
+    try {
+      const { data } = await axios.post(`/movie/search/${search}`, {
+        categories,
+      });
+
+      dispatch({
+        type: SEARCH_MOVIE,
+        payload: { movies: data.movies },
+      });
+    } catch (err) {
+      console.log(err);
+      toast("Movie not found", { type: "info" });
     }
   };
 
@@ -190,7 +222,13 @@ export default function MenuBar() {
               </div>
 
               {/* Search bar */}
-              <div className="relative">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  getMovies();
+                }}
+                className="relative"
+              >
                 <span className="absolute inset-y-0 left-0 flex items-center py-4">
                   <button
                     type="submit"
@@ -200,12 +238,13 @@ export default function MenuBar() {
                   </button>
                 </span>
                 <input
+                  ref={searchRef}
                   type="search"
                   name="Search"
                   placeholder="Search..."
                   className="w-full rounded-md border-transparent bg-black-900 py-2 pl-10 text-sm text-gray-100 focus:bg-gray-900 focus:outline-none"
                 />
-              </div>
+              </form>
 
               {/* Menu */}
               <div className="flex-1 border-b border-black-400">

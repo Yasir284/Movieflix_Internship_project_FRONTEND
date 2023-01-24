@@ -72,10 +72,9 @@ export default function AdminSection() {
     }
 
     try {
-      const { data } = await axios.post(
-        `/movie/search/${search ? search : "~"}`,
-        { categories: category === "ALL" ? [] : [category] }
-      );
+      const { data } = await axios.post(`/movie/search/${search}`, {
+        categories: category === "ALL" ? [] : [category],
+      });
 
       dispatch({
         type: SEARCH_MOVIE,
@@ -239,7 +238,7 @@ function TableColumns({ movie, index }) {
         <p>{movie.name}</p>
       </td>
       <td className="p-3">
-        <p>{movie.rating}</p>
+        <p>{movie.rating.toFixed(1)}</p>
       </td>
       <td className="p-3">
         <div className="flex flex-col items-start gap-1">
