@@ -10,7 +10,10 @@ import { EDIT_MOVIE } from "../utils/action.types";
 export default function HomeSection() {
   const { movies, dispatch } = useContext(MovieContext);
   const { profile } = useContext(UserContext);
-  const [movieDetails, setMovieDetails] = useState(false);
+  const [movieDetails, setMovieDetails] = useState({
+    active: false,
+    movie: "",
+  });
 
   const addToWishlist = async (movieId) => {
     try {
@@ -25,6 +28,7 @@ export default function HomeSection() {
       });
 
       toast("Movie added to wishlist", { type: "info" });
+      return data.movie;
     } catch (err) {
       console.log(err);
       toast("Error in adding movie to wishlist", { type: "error" });
@@ -47,6 +51,7 @@ export default function HomeSection() {
       });
 
       toast("Movie removed from wishlist", { type: "info" });
+      return data.movie;
     } catch (err) {
       console.log(err);
       toast("Error in removing movie from wishlist", { type: "error" });
@@ -54,10 +59,9 @@ export default function HomeSection() {
   };
 
   const handleWishlist = (movie) => {
-    if (movie.wishlist.findIndex((e) => e.userId === profile._id) !== -1) {
-      return removeFromWishlist(movie._id);
-    }
-    addToWishlist(movie._id);
+    return movie.wishlist.findIndex((e) => e.userId === profile._id) !== -1
+      ? removeFromWishlist(movie._id)
+      : addToWishlist(movie._id);
   };
 
   return (
@@ -87,7 +91,7 @@ export default function HomeSection() {
                   <div className="mx-2">
                     <div className="flex flex-row justify-between text-xs">
                       <button
-                        onClick={() => setMovieDetails(true)}
+                        onClick={() => setMovieDetails({ active: true, movie })}
                         className="rounded-3xl bg-my-red bg-opacity-50 py-1 px-4 transition-all duration-200 ease-in-out active:scale-90"
                       >
                         Details
@@ -113,8 +117,12 @@ export default function HomeSection() {
           ))}
       </ul>
 
-      {movieDetails && (
-        <MovieDetail active={movieDetails} setActive={setMovieDetails} />
+      {movieDetails.active && (
+        <MovieDetail
+          active={movieDetails}
+          setActive={setMovieDetails}
+          handleWishlist={handleWishlist}
+        />
       )}
     </div>
   );
