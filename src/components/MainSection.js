@@ -1,5 +1,7 @@
-import React from "react";
+// Dependencies
 import { Outlet } from "react-router-dom";
+
+// Components
 import MenuBar from "./MenuBar";
 
 export default function MainSection() {

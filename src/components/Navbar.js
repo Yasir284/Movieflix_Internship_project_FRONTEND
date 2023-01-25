@@ -1,7 +1,7 @@
-import React from "react";
+// Image
 import logo from "../images/logo-1.png";
 
-export const Navbar = () => {
+export default function Navbar() {
   return (
     <nav className="sticky top-0 left-0 z-20 h-[10vh] border-b-2 border-black-600 backdrop-blur-sm backdrop-filter">
       <div className="flex flex-row items-center justify-between bg-black-900 bg-opacity-50 px-10">
@@ -14,4 +14,4 @@ export const Navbar = () => {
       </div>
     </nav>
   );
-};
+}

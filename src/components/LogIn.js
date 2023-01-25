@@ -1,11 +1,17 @@
-import axios from "axios";
+// Dependencies and React hooks
 import React, { useContext, useRef } from "react";
-import { MdArrowBack } from "react-icons/md";
+import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { UserContext } from "../contexts/UserContext";
 import { motion } from "framer-motion";
 
+// React Icons
+import { MdArrowBack } from "react-icons/md";
+
+// Contexts
+import { UserContext } from "../contexts/UserContext";
+
+// Framer motion animation varients
 const buttonVaritent = {
   whileTap: { scale: 0.9 },
   transition: { type: "spring", stiffness: 120, ease: "easeInOut" },

@@ -1,6 +1,11 @@
+// Dependencies and React hooks
 import React, { useContext, useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+
+// React Icons
 import {
   MdOutlineStarOutline,
   MdOutlineStarPurple500,
@@ -18,14 +23,25 @@ import {
 } from "react-icons/md";
 import { BiSearchAlt, BiMenu } from "react-icons/bi";
 
-import { GET_MOVIES, SEARCH_MOVIE } from "../utils/action.types";
-import { toast } from "react-toastify";
-import { AnimatePresence, motion } from "framer-motion";
-import Profile from "./Profile";
+// Components
+import Profile from "./sub-components/Profile";
 
+// Utils
+import { GET_MOVIES, SEARCH_MOVIE } from "../utils/action.types";
+
+// Contexts
 import { MovieContext } from "../contexts/MovieContext";
 import { UserContext } from "../contexts/UserContext";
 
+// Framer motion animation varients
+const contarientVarient = {
+  initial: { x: "100vw" },
+  animate: { x: 0 },
+  exit: { x: "100vw" },
+  transition: { type: "keyframes" },
+};
+
+// Movies categories list array
 let categoryList = [
   "ACTION",
   "COMEDY",
@@ -36,13 +52,6 @@ let categoryList = [
   "ADVENTURE",
   "REAL LIFE",
 ];
-
-const contarientVarient = {
-  initial: { x: "100vw" },
-  animate: { x: 0 },
-  exit: { x: "100vw" },
-  transition: { type: "keyframes" },
-};
 
 export default function MenuBar() {
   const { profile, setProfile } = useContext(UserContext);
@@ -56,6 +65,7 @@ export default function MenuBar() {
 
   const navigate = useNavigate();
 
+  // Menu list array
   const menuList = [
     {
       id: 1,
@@ -76,11 +86,16 @@ export default function MenuBar() {
       activeIcon: MdBookmark,
       size: "1.5rem",
       style: "text-black-400",
-      name: "Wishlist",
+      name: "Watchlist",
       active: false,
       handleClick() {
-        navigate("/home/wishlist");
-        setAcitveId(this.id);
+        if (profile) {
+          navigate("/home/wishlist");
+          setAcitveId(this.id);
+          return;
+        }
+        navigate("/login");
+        toast("Login / Signup first", { type: "warning" });
       },
     },
     {

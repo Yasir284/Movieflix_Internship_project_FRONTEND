@@ -1,11 +1,19 @@
+// Dependencies and React hooks
 import React, { useContext, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MdClose } from "react-icons/md";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { motion, AnimatePresence } from "framer-motion";
+
+// React Icons
+import { MdClose } from "react-icons/md";
+
+// Contexts
 import { MovieContext } from "../../contexts/MovieContext";
+
+// Utils
 import { ADD_MOVIE } from "../../utils/action.types";
 
+// Framer motion animation varients
 const buttonVaritent = {
   whileTap: { scale: 0.9 },
   transition: { type: "spring", stiffness: 120, ease: "easeInOut" },
