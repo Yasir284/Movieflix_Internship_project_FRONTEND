@@ -1,6 +1,6 @@
 // Dependencies and React hooks
 import React, { useContext, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 // Contexts
 import { MovieContext } from "../contexts/MovieContext";
@@ -17,14 +17,16 @@ export default function HomeSection() {
   });
 
   return (
-    <motion.div className="custome-scroll mx-12 h-[90vh] basis-[75vw] overflow-y-scroll transition-all duration-200 ease-in-out">
+    <motion.div className="custome-scroll mx-auto h-[90vh] basis-[75vw]  overflow-y-scroll">
       <ul className="mx-8 mt-10 flex flex-row flex-wrap items-center justify-center gap-8">
         <MovieList movies={movies} setMovieDetails={setMovieDetails} />
       </ul>
 
-      {movieDetails.active && (
-        <MovieDetail active={movieDetails} setActive={setMovieDetails} />
-      )}
+      <AnimatePresence>
+        {movieDetails.active && (
+          <MovieDetail active={movieDetails} setActive={setMovieDetails} />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

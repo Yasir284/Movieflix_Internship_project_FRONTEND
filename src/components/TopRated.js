@@ -1,6 +1,6 @@
 // Dependencies and React hooks
 import React, { useContext, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 // React Icons
 import { MdStars } from "react-icons/md";
@@ -35,9 +35,11 @@ export default function Watchlist() {
         <MovieList movies={topRated} setMovieDetails={setMovieDetails} />
       </ul>
 
-      {movieDetails.active && (
-        <MovieDetail active={movieDetails} setActive={setMovieDetails} />
-      )}
+      <AnimatePresence>
+        {movieDetails.active && (
+          <MovieDetail active={movieDetails} setActive={setMovieDetails} />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

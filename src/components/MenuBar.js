@@ -216,7 +216,7 @@ export default function MenuBar() {
     <AnimatePresence>
       <div
         onClick={() => setActiveSidebar(!activeSideBar)}
-        className="group absolute top-[2.5vh] right-10 z-20 flex items-center justify-center rounded-md shadow-lg shadow-black transition-all duration-200 ease-in-out active:scale-90"
+        className="group absolute top-[2.5vh] right-10 z-30 flex items-center justify-center rounded-md shadow-lg shadow-black transition-all duration-200 ease-in-out active:scale-90"
       >
         <button className="transition-all duration-200 ease-in-out group-active:scale-75">
           {!activeSideBar ? <BiMenu size="2rem" /> : <MdClose size="2rem" />}

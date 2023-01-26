@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 // React Icons
 import { MdAdd, MdKeyboardArrowLeft } from "react-icons/md";
@@ -15,6 +16,13 @@ import TableColumns from "./sub-components/TableColumns";
 
 // Utils
 import { GET_MOVIES, SEARCH_MOVIE } from "../utils/action.types";
+
+// Framer motion animation varitents
+const containerVarient = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+};
 
 export default function AdminSection() {
   const [toggleAddMovie, setToggleAddMovie] = useState(false);
@@ -89,7 +97,7 @@ export default function AdminSection() {
   };
 
   return (
-    <div>
+    <motion.div {...containerVarient}>
       <div className="container mx-auto mb-4 p-2 text-gray-100 sm:p-4">
         {/* Heading */}
         <div className="w-full flex-col items-center justify-center">
@@ -199,6 +207,6 @@ export default function AdminSection() {
         toggleAddMovie={toggleAddMovie}
         setToggleAddMovie={setToggleAddMovie}
       />
-    </div>
+    </motion.div>
   );
 }

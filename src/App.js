@@ -3,7 +3,8 @@ import { useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 // Contexts and Reducer
 import { UserContext } from "./contexts/UserContext";
@@ -28,6 +29,8 @@ axios.defaults.baseURL = "http://localhost:4000/api";
 axios.defaults.withCredentials = true;
 
 function App() {
+  const location = useLocation();
+
   const [profile, setProfile] = useState(null);
   const [movies, dispatch] = useReducer(MovieReducer, []);
 
@@ -132,27 +135,31 @@ function App() {
           removeFromWishlist,
         }}
       >
-        <Routes>
-          <Route path="/" element={<Navigate replace to={"/home"} />} />
-          <Route path="/home" element={<MainSection />}>
-            <Route index element={<HomeSection />} />
-            <Route path="wishlist" element={<Watchlist />} />
-            <Route path="top-rated" element={<TopRated />} />
-          </Route>
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<LogIn />} />
+        <AnimatePresence exitBeforeEnter>
+          <Routes location={location} key={location}>
+            <Route path="/" element={<Navigate replace to={"/home"} />} />
 
-          <Route
-            path="/admin"
-            element={
-              profile && profile.role === "ADMIN" ? (
-                <AdminSection />
-              ) : (
-                <ErrorPage />
-              )
-            }
-          />
-        </Routes>
+            <Route path="/home" element={<MainSection />}>
+              <Route index element={<HomeSection />} />
+              <Route path="wishlist" element={<Watchlist />} />
+              <Route path="top-rated" element={<TopRated />} />
+            </Route>
+
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<LogIn />} />
+
+            <Route
+              path="/admin"
+              element={
+                profile && profile.role === "ADMIN" ? (
+                  <AdminSection />
+                ) : (
+                  <ErrorPage />
+                )
+              }
+            />
+          </Routes>
+        </AnimatePresence>
       </MovieContext.Provider>
     </UserContext.Provider>
   );

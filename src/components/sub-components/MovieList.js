@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 // React Icons
 import { MdBookmark, MdBookmarkBorder, MdStar } from "react-icons/md";
+import { FaStar } from "react-icons/fa";
 
 // Contexts
 import { MovieContext } from "../../contexts/MovieContext";
@@ -39,9 +40,16 @@ export default function MovieList({ movies, setMovieDetails }) {
               />
 
               <div className="hidden h-full w-full flex-col justify-between rounded-3xl bg-black bg-opacity-25 py-4 backdrop-blur-[1px] backdrop-filter transition-all duration-200 ease-in-out group-hover:flex">
-                <h2 className="max-w-52 mb-2 border-b text-center text-base font-semibold">
-                  {movie.name}
-                </h2>
+                <div>
+                  <h2 className="max-w-52 mb-2 border-b text-center text-base font-semibold">
+                    {movie.name}
+                  </h2>
+
+                  <div className="ml-2 flex w-14 flex-row items-center gap-1 rounded-full bg-white py-1 px-2 text-xs font-semibold text-black">
+                    <FaStar className="text-yellow-500" size="1rem" />
+                    <p>{movie?.rating.toFixed(1)}</p>
+                  </div>
+                </div>
 
                 <div className="mx-2">
                   {/* Rating */}
@@ -57,7 +65,7 @@ export default function MovieList({ movies, setMovieDetails }) {
                     {/* Movie Details */}
                     <button
                       onClick={() => setMovieDetails({ active: true, movie })}
-                      className="rounded-3xl bg-my-red py-1 px-4 font-semibold transition-all duration-200 ease-in-out active:scale-90"
+                      className="rounded-3xl border border-transparent bg-my-red py-1 px-4 font-semibold transition-all duration-200 ease-in-out hover:border-white hover:bg-transparent active:scale-90"
                     >
                       Details
                     </button>
@@ -65,7 +73,7 @@ export default function MovieList({ movies, setMovieDetails }) {
                     {/* Wishlist */}
                     <button
                       onClick={() => handleWishlist(movie)}
-                      className="rounded-full bg-white p-2 text-black transition-all duration-200 ease-in-out active:scale-90"
+                      className="rounded-full border border-transparent bg-white p-2 text-black  transition-all duration-200 ease-in-out hover:border-white hover:bg-transparent hover:text-white active:scale-90"
                     >
                       {profile &&
                       movie.wishlist.findIndex(
