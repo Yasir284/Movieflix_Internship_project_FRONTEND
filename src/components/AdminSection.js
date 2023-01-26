@@ -73,8 +73,10 @@ export default function AdminSection() {
         type: GET_MOVIES,
         payload: { movies: data.movies },
       });
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
       toast("Error in getting movies", { type: "error" });
     }
   };

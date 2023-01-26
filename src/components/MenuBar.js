@@ -197,8 +197,10 @@ export default function MenuBar() {
         type: SEARCH_MOVIE,
         payload: { movies: data.movies },
       });
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
       toast("Movie not found", { type: "info" });
     }
   };
