@@ -9,6 +9,7 @@ import { MdClose } from "react-icons/md";
 
 // Contexts
 import { MovieContext } from "../../contexts/MovieContext";
+import { UserContext } from "../../contexts/UserContext";
 
 // Utils
 import { ADD_MOVIE } from "../../utils/action.types";
@@ -27,6 +28,7 @@ const containerVaritent = {
 
 export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
   const { dispatch } = useContext(MovieContext);
+  const { setLoading } = useContext(UserContext);
 
   const nameRef = useRef();
   const trailerRef = useRef();
@@ -49,6 +51,8 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
   //   Add movie
   const addMovie = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     const name = nameRef.current.value;
     const trailerUrl = trailerRef.current.value;
@@ -93,9 +97,11 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
       descriptionRef.current.value = "";
       imageRef.current.value = "";
 
+      setLoading(false);
       toast("Movie added successfully", { type: "success" });
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   };
 

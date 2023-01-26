@@ -8,7 +8,10 @@ import { motion } from "framer-motion";
 // React Icons
 import { MdAdd, MdKeyboardArrowLeft } from "react-icons/md";
 import { BiSearchAlt } from "react-icons/bi";
+
+// Contexts
 import { MovieContext } from "../contexts/MovieContext";
+import { UserContext } from "../contexts/UserContext";
 
 // Components
 import AddMovie from "./modals/AddMovie";
@@ -27,11 +30,14 @@ const containerVarient = {
 export default function AdminSection() {
   const [toggleAddMovie, setToggleAddMovie] = useState(false);
   const { movies, dispatch } = useContext(MovieContext);
+  const { setLoading } = useContext(UserContext);
 
   const searchRef = useRef();
   const categoryRef = useRef();
 
-  const getMovies = async (dispatch) => {
+  const getMovies = async (dispatch, setLoading) => {
+    setLoading(true);
+
     try {
       const { data } = await axios.post("/movie/get");
       console.log("data: ", data);
@@ -40,15 +46,17 @@ export default function AdminSection() {
         type: GET_MOVIES,
         payload: { movies: data.movies },
       });
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
       toast("Error in getting movies", { type: "error" });
     }
   };
 
   useEffect(() => {
-    getMovies(dispatch);
-  }, [dispatch]);
+    getMovies(dispatch, setLoading);
+  }, [dispatch, setLoading]);
   console.log("movies: ", movies);
 
   // Filter movies based on category
@@ -74,6 +82,9 @@ export default function AdminSection() {
   // Search movies
   const queryMovies = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+
     const category = categoryRef.current.value;
     const search = searchRef.current.value;
 
@@ -90,8 +101,10 @@ export default function AdminSection() {
         type: SEARCH_MOVIE,
         payload: { movies: data.movies },
       });
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
       toast("Movie not found", { type: "info" });
     }
   };
@@ -185,7 +198,7 @@ export default function AdminSection() {
               </tr>
             </thead>
             {movies && movies.length > 0 ? (
-              <tbody>
+              <tbody className="relative">
                 {movies.map((movie, index) => (
                   <tr
                     key={index}

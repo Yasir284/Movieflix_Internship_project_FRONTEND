@@ -24,12 +24,12 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
-  const { setProfile } = useContext(UserContext);
+  const { setProfile, setLoading } = useContext(UserContext);
 
   // Signup function
   const handleSignUp = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     const payload = {
       name: nameRef.current.value,
       email: emailRef.current.value,
@@ -51,10 +51,11 @@ export default function SignUp() {
       passwordRef.current.value = "";
 
       toast("Logged in successfully", { type: "success" });
-
+      setLoading(false);
       navigate("/");
     } catch (err) {
       console.log(err.message);
+      setLoading(false);
       return toast("Invalid Credentials", { type: "error" });
     }
   };

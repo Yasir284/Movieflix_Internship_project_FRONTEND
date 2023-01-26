@@ -9,6 +9,7 @@ import { MdDelete, MdEditNote } from "react-icons/md";
 
 // Contexts
 import { MovieContext } from "../../contexts/MovieContext";
+import { UserContext } from "../../contexts/UserContext";
 
 // Components
 import EditMovie from "../modals/EditMovie";
@@ -19,9 +20,12 @@ import { DELETE_MOVIE } from "../../utils/action.types";
 export default function TableColumns({ movie, index }) {
   const [toggleEditMovie, setToggleEditMovie] = useState(false);
   const { dispatch } = useContext(MovieContext);
+  const { setLoading } = useContext(UserContext);
 
   // Delete movie
   const deleteMovie = async () => {
+    setLoading(true);
+
     try {
       const { data } = await axios.put(`/movie/delete/${movie._id}`, {
         public_id: movie.image.public_id,
@@ -36,9 +40,12 @@ export default function TableColumns({ movie, index }) {
         },
       });
 
+      setLoading(false);
+
       toast("Movie Deleted", { type: "info" });
     } catch (err) {
       console.log(err);
+      setLoading(false);
       toast("Failed to delete the movie", { type: "error" });
     }
   };

@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { motion } from "framer-motion";
 
 // React Icons
-import { MdBookmark, MdBookmarkBorder, MdStar } from "react-icons/md";
+import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
 
 // Contexts
@@ -52,15 +52,6 @@ export default function MovieList({ movies, setMovieDetails }) {
                 </div>
 
                 <div className="mx-2">
-                  {/* Rating */}
-                  <div className="flex w-14 flex-col items-center rounded-full text-xs font-semibold">
-                    <p>IMDb</p>
-                    <div className="flex flex-row items-center gap-1">
-                      <MdStar className="text-yellow-500" size="1rem" />
-                      <p>{movie?.rating.toFixed(1)}</p>
-                    </div>
-                  </div>
-
                   <div className="mt-2 flex flex-row justify-between text-xs">
                     {/* Movie Details */}
                     <button

@@ -9,6 +9,7 @@ import { MdClose } from "react-icons/md";
 
 // Contexts
 import { MovieContext } from "../../contexts/MovieContext";
+import { UserContext } from "../../contexts/UserContext";
 
 // Utils
 import { EDIT_MOVIE } from "../../utils/action.types";
@@ -27,6 +28,7 @@ const containerVaritent = {
 
 export default function EditMovie({ active, movie, setActive }) {
   const { dispatch } = useContext(MovieContext);
+  const { setLoading } = useContext(UserContext);
 
   const [name, setName] = useState(movie.name);
   const [trailerUrl, setTrailerUrl] = useState(movie.trailerUrl);
@@ -43,6 +45,8 @@ export default function EditMovie({ active, movie, setActive }) {
   //   Edit movie
   const editMovie = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     let formData = new FormData();
 
@@ -76,12 +80,14 @@ export default function EditMovie({ active, movie, setActive }) {
         },
       });
 
+      setLoading(false);
       toast("Movie Edited successfully", { type: "success" });
 
       setActive(false);
     } catch (err) {
       console.log(err);
 
+      setLoading(false);
       toast("Error in editing movie", { type: "error" });
     }
   };

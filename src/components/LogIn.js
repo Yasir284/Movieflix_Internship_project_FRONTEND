@@ -23,11 +23,12 @@ export default function LogIn() {
 
   const navigate = useNavigate();
 
-  const { setProfile } = useContext(UserContext);
+  const { setProfile, setLoading } = useContext(UserContext);
 
   // Login function
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const payload = {
       email: emailRef.current.value,
@@ -53,9 +54,11 @@ export default function LogIn() {
         return navigate("/admin");
       }
 
+      setLoading(false);
       navigate("/");
     } catch (err) {
       console.log(err.message);
+      setLoading(false);
       return toast("Invalid Credentials", { type: "error" });
     }
   };

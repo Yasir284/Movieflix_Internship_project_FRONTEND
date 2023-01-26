@@ -54,12 +54,12 @@ let categoryList = [
 ];
 
 export default function MenuBar() {
-  const { profile, setProfile } = useContext(UserContext);
+  const { dispatch } = useContext(MovieContext);
+  const { profile, setProfile, setLoading } = useContext(UserContext);
 
   const [activeSideBar, setActiveSidebar] = useState(true);
   const [categories, setCategories] = useState([]);
   console.log("categories:", categories);
-  const { dispatch } = useContext(MovieContext);
 
   const searchRef = useRef();
 
@@ -134,6 +134,8 @@ export default function MenuBar() {
 
   // Get movies based on categories
   const getMovies = async (category) => {
+    setLoading(true);
+
     const search = searchRef.current.value;
 
     let newCategories;
@@ -172,8 +174,10 @@ export default function MenuBar() {
         type: GET_MOVIES,
         payload: { movies: data.movies },
       });
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
       toast("Error in getting movies", { type: "error" });
     }
   };
@@ -201,13 +205,17 @@ export default function MenuBar() {
 
   // Logout user
   const handleLogout = async () => {
+    setLoading(true);
+
     try {
       const { data } = await axios("/auth/logout");
       console.log("Logged out: ", data);
       setProfile(null);
+      setLoading(false);
       navigate("/");
     } catch (err) {
       console.log(err);
+      setLoading(false);
       toast("Something went wrong", { type: "error" });
     }
   };
