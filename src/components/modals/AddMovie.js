@@ -123,9 +123,9 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
         <motion.div
           key={toggleAddMovie}
           {...containerVaritent}
-          className="fixed top-0 left-0 z-50 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-50 p-2 text-white backdrop-blur-sm"
+          className="fixed top-0 left-0 z-50 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-50 text-white backdrop-blur-sm md:p-2"
         >
-          <section className="flex items-center justify-center">
+          <section className="mt-9 flex items-center justify-center md:mt-0">
             <form
               onSubmit={addMovie}
               className="relative rounded-md border-2 border-white bg-transparent text-gray-50"

@@ -2,7 +2,7 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 // React Icons
 import { MdDelete, MdEditNote, MdInfo } from "react-icons/md";
@@ -10,9 +10,6 @@ import { MdDelete, MdEditNote, MdInfo } from "react-icons/md";
 // Contexts
 import { MovieContext } from "../../contexts/MovieContext";
 import { UserContext } from "../../contexts/UserContext";
-
-// Components
-import EditMovie from "../modals/EditMovie";
 
 // Utils
 import { DELETE_MOVIE } from "../../utils/action.types";
@@ -23,8 +20,7 @@ const varient = {
   animate: { opacity: 1 },
 };
 
-export default function TableColumns({ movie, index }) {
-  const [toggleEditMovie, setToggleEditMovie] = useState(false);
+export default function TableColumns({ movie, index, setToggleEditMovie }) {
   const { dispatch } = useContext(MovieContext);
   const { setLoading } = useContext(UserContext);
   const [active, setActive] = useState(false);
@@ -62,7 +58,7 @@ export default function TableColumns({ movie, index }) {
         <p>{index + 1}</p>
       </td>
       <td className="p-3">
-        <p className="w-fit">{movie.name}</p>
+        <p>{movie.name}</p>
       </td>
       <td className="p-3">
         <p>{movie.rating.toFixed(1)}</p>
@@ -96,47 +92,45 @@ export default function TableColumns({ movie, index }) {
         </div>
       </td>
       <td className="relative p-3">
-        <MdInfo onClick={() => setActive(!active)} size="1.5rem" className="" />
-        {active && (
-          <motion.p
-            {...varient}
-            className="absolute -top-10 -left-40 w-[35vw] rounded-sm bg-black py-2 px-4 shadow-md shadow-black"
-          >
-            {movie.description}
-          </motion.p>
-        )}
-      </td>
-      <td className="p-3">
-        <p
-          onClick={() => setToggleEditMovie(true)}
-          className="transition-all duration-200 ease-in-out active:scale-90"
-        >
-          <MdEditNote
-            size="1.75rem"
-            className="rounded-md bg-green-500 p-1 text-center"
-          />
-        </p>
-      </td>
-      <td className="p-3">
-        <p
-          onClick={deleteMovie}
-          className="transition-all duration-200 ease-in-out active:scale-90"
-        >
-          <MdDelete
-            size="1.75rem"
-            className="rounded-md bg-red-500 p-1 text-center"
-          />
-        </p>
-        {/*  Edit Movie Modal*/}
-        <AnimatePresence>
-          {toggleEditMovie && (
-            <EditMovie
-              active={toggleEditMovie}
-              movie={movie}
-              setActive={setToggleEditMovie}
+        <div className="flex flex-row flex-wrap gap-2">
+          <div title="Movie description">
+            <MdInfo
+              onClick={() => setActive(!active)}
+              size="1.75rem"
+              className="transition-all duration-200 ease-in-out active:scale-90"
             />
-          )}
-        </AnimatePresence>
+            {active && (
+              <motion.p
+                {...varient}
+                className="absolute -top-10 right-32 w-[60vw] rounded-sm bg-black py-2 px-4 shadow-md shadow-black md:w-[35vw]"
+              >
+                {movie.description}
+              </motion.p>
+            )}
+          </div>
+
+          <p
+            title="Edit movie"
+            onClick={() => setToggleEditMovie({ active: true, movie: movie })}
+            className="transition-all duration-200 ease-in-out active:scale-90"
+          >
+            <MdEditNote
+              size="1.75rem"
+              className="rounded-md bg-green-500 p-1 text-center"
+            />
+          </p>
+
+          <p
+            title="Delete movie"
+            onClick={deleteMovie}
+            className="transition-all duration-200 ease-in-out active:scale-90"
+          >
+            <MdDelete
+              size="1.75rem"
+              className="rounded-md bg-red-500 p-1 text-center"
+            />
+          </p>
+        </div>
       </td>
     </>
   );

@@ -19,6 +19,7 @@ import TableColumns from "./sub-components/TableColumns";
 
 // Utils
 import { GET_MOVIES, SEARCH_MOVIE } from "../utils/action.types";
+import EditMovie from "./modals/EditMovie";
 
 // Framer motion animation varitents
 const containerVarient = {
@@ -36,6 +37,10 @@ const tableRowVaritent = {
 
 export default function AdminSection() {
   const [toggleAddMovie, setToggleAddMovie] = useState(false);
+  const [toggleEditMovie, setToggleEditMovie] = useState({
+    active: false,
+    movie: "",
+  });
   const { movies, dispatch } = useContext(MovieContext);
   const { setLoading } = useContext(UserContext);
 
@@ -119,115 +124,127 @@ export default function AdminSection() {
   };
 
   return (
-    <motion.div {...containerVarient}>
-      <div className="mx-2 text-gray-100 md:mx-12">
-        {/* Heading */}
-        <div className="w-full flex-col items-center justify-center">
-          {/* Category */}
-          <form className="mx-auto mb-4 mt-2 w-fit bg-black-900">
-            <select
-              name="category"
-              className="bg-black-900 text-2xl font-bold text-white"
-              onChange={queryMovies}
-              ref={categoryRef}
-            >
-              <option value="ALL">ALL MOVIES</option>
-              <option value="ACTION">ACTION</option>
-              <option value="COMEDY">COMEDY</option>
-              <option value="ROMANCE">ROMANCE</option>
-              <option value="SCI-FI">SCI-FI</option>
-              <option value="HORROR">HORROR</option>
-              <option value="CRIME THRILLER">CRIME THRILLER</option>
-              <option value="ADVENTURE">ADVENTURE</option>
-              <option value="REAL LIFE">REAL LIFE</option>
-            </select>
-          </form>
-
-          <div className="mb-4 text-sm">
-            {/* Search */}
-            <form
-              onSubmit={queryMovies}
-              className="relative mx-auto mb-4 w-1/2"
-            >
-              <span className="absolute inset-y-0 left-0 flex items-center py-4">
-                <button
-                  type="submit"
-                  className="p-2 focus:outline-none focus:ring"
-                >
-                  <BiSearchAlt size="1.5rem" className="text-black-400" />
-                </button>
-              </span>
-              <input
-                ref={searchRef}
-                type="search"
-                name="Search"
-                placeholder="Search..."
-                className="mx-auto w-full rounded-full border-2 border-black-400 bg-black-900 py-2 pl-10 text-sm text-gray-100 focus:bg-black"
-              />
+    <>
+      {" "}
+      <motion.div {...containerVarient}>
+        <div className="mx-2 text-gray-100 md:mx-12">
+          {/* Heading */}
+          <div className="w-full flex-col items-center justify-center">
+            {/* Category */}
+            <form className="mx-auto mb-4 mt-2 w-fit rounded-md border  bg-black-900">
+              <select
+                name="category"
+                className="rounded-md bg-black-900 text-2xl font-bold text-white"
+                onChange={queryMovies}
+                ref={categoryRef}
+              >
+                <option value="ALL">ALL MOVIES</option>
+                <option value="ACTION">ACTION</option>
+                <option value="COMEDY">COMEDY</option>
+                <option value="ROMANCE">ROMANCE</option>
+                <option value="SCI-FI">SCI-FI</option>
+                <option value="HORROR">HORROR</option>
+                <option value="CRIME THRILLER">CRIME THRILLER</option>
+                <option value="ADVENTURE">ADVENTURE</option>
+                <option value="REAL LIFE">REAL LIFE</option>
+              </select>
             </form>
 
-            <div className="flex w-full flex-row flex-wrap justify-between">
-              <NavLink to={"/home"}>
-                <div className="group flex flex-row items-center gap-2 rounded-3xl border-2 border-black-400 py-2 px-3 text-black-400 transition-all duration-200 ease-in-out hover:border-white hover:text-white">
-                  <MdKeyboardArrowLeft
-                    size="1.5rem"
-                    className="transition-all duration-200 ease-in-out group-hover:-translate-x-2"
-                  />
-                  <p title="Back to homepage">Homepage</p>
-                </div>
-              </NavLink>
-
-              {/* Add movie */}
-              <button
-                onClick={() => setToggleAddMovie(true)}
-                className="flex flex-row items-center rounded-full bg-my-red py-2 px-4 transition-all duration-200 ease-in-out active:scale-90"
+            <div className="mb-4 text-sm">
+              {/* Search */}
+              <form
+                onSubmit={queryMovies}
+                className="relative mx-auto mb-4 w-60 md:w-80"
               >
-                <MdAdd size="1.5rem" />
-                <h2>Add Movie</h2>
-              </button>
+                <span className="absolute inset-y-0 left-0 flex items-center py-4">
+                  <button
+                    type="submit"
+                    className="p-2 focus:outline-none focus:ring"
+                  >
+                    <BiSearchAlt size="1.5rem" className="text-black-400" />
+                  </button>
+                </span>
+                <input
+                  ref={searchRef}
+                  type="search"
+                  name="Search"
+                  placeholder="Search..."
+                  className="mx-auto w-full rounded-full border-2 border-black-400 bg-black-900 py-2 pl-10 text-sm text-gray-100 focus:bg-black"
+                />
+              </form>
+
+              <div className="flex w-full flex-row flex-wrap justify-between">
+                <NavLink to={"/home"}>
+                  <div className="group flex flex-row items-center gap-2 rounded-3xl border-2 border-black-400 py-2 px-3 text-black-400 transition-all duration-200 ease-in-out hover:border-white hover:text-white">
+                    <MdKeyboardArrowLeft
+                      size="1.5rem"
+                      className="transition-all duration-200 ease-in-out group-hover:-translate-x-2"
+                    />
+                    <p title="Back to homepage">Homepage</p>
+                  </div>
+                </NavLink>
+
+                {/* Add movie */}
+                <button
+                  onClick={() => setToggleAddMovie(true)}
+                  className="flex flex-row items-center rounded-full bg-my-red py-2 px-4 transition-all duration-200 ease-in-out active:scale-90"
+                >
+                  <MdAdd size="1.5rem" />
+                  <h2>Add Movie</h2>
+                </button>
+              </div>
             </div>
           </div>
+
+          {/* Movies Table */}
+          <div className="custome-scroll h-[64vh] overflow-auto rounded-sm">
+            <table className="min-w-full rounded-sm text-xs">
+              <thead className="bg-gray-700">
+                <tr className="text-left">
+                  <th className="p-3">Serial No. </th>
+                  <th className="p-3">Name</th>
+                  <th className="p-3">Rating</th>
+                  <th className="p-3">Links</th>
+                  <th className="p-3">Info / Edit / Delete</th>
+                </tr>
+              </thead>
+
+              {movies && movies.length > 0 ? (
+                <tbody>
+                  {movies.map((movie, index) => (
+                    <motion.tr
+                      {...tableRowVaritent}
+                      key={index}
+                      className="border-b border-slate-300 border-opacity-20 bg-gray-900"
+                    >
+                      <TableColumns
+                        movie={movie}
+                        index={index}
+                        setToggleEditMovie={setToggleEditMovie}
+                      />
+                    </motion.tr>
+                  ))}
+                </tbody>
+              ) : (
+                ""
+              )}
+            </table>
+          </div>
         </div>
-
-        {/* Movies Table */}
-        <div className="custome-scroll h-[64vh] overflow-auto rounded-sm">
-          <table className="min-w-full rounded-sm text-xs">
-            <thead className="bg-gray-700">
-              <tr className="text-left">
-                <th className="p-3">Serial No. </th>
-                <th className="p-3">Name</th>
-                <th className="p-3">Rating</th>
-                <th className="p-3">Links</th>
-                <th className="p-3">Description</th>
-                <th className="p-3">Edit</th>
-                <th className="p-3">Delete</th>
-              </tr>
-            </thead>
-
-            {movies && movies.length > 0 ? (
-              <tbody>
-                {movies.map((movie, index) => (
-                  <motion.tr
-                    {...tableRowVaritent}
-                    key={index}
-                    className="border-b border-slate-300 border-opacity-20 bg-gray-900"
-                  >
-                    <TableColumns movie={movie} index={index} />
-                  </motion.tr>
-                ))}
-              </tbody>
-            ) : (
-              ""
-            )}
-          </table>
-        </div>
-      </div>
-
+      </motion.div>
       {/* Add Movie Modal */}
       <AddMovie
         toggleAddMovie={toggleAddMovie}
         setToggleAddMovie={setToggleAddMovie}
       />
-    </motion.div>
+      {/*  Edit Movie Modal*/}
+      {toggleEditMovie.active && (
+        <EditMovie
+          active={toggleEditMovie.active}
+          movie={toggleEditMovie.movie}
+          setActive={setToggleEditMovie}
+        />
+      )}
+    </>
   );
 }
