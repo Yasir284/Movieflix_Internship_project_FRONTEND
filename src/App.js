@@ -12,7 +12,7 @@ import { MovieContext } from "./contexts/MovieContext";
 import MovieReducer from "./reducers/MovieReducer";
 
 // Utils
-import { EDIT_MOVIE, GET_MOVIES } from "./utils/action.types";
+import { EDIT_MOVIE, GET_MOVIES, SEARCH_MOVIE } from "./utils/action.types";
 
 // Components
 import Loader from "./components/modals/Loader";
@@ -26,15 +26,35 @@ const TopRated = lazy(() => import("./components/TopRated"));
 const Watchlist = lazy(() => import("./components/Watchlist"));
 const MainSection = lazy(() => import("./components/MainSection"));
 
-axios.defaults.baseURL = "http://localhost:4000/api";
+axios.defaults.baseURL = "http://192.168.0.108:4000/api";
 axios.defaults.withCredentials = true;
+// axios.defaults.headers = {
+//   Authorization: sessionStorage.getItem("bearerToken"),
+// };
+
+// Movies categories list array
+let categoryList = [
+  "ACTION",
+  "COMEDY",
+  "ROMANCE",
+  "SCI-FI",
+  "HORROR",
+  "CRIME THRILLER",
+  "ADVENTURE",
+  "REAL LIFE",
+];
 
 function App() {
   const location = useLocation();
 
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [search, setSearch] = useState(null);
+
   const [movies, dispatch] = useReducer(MovieReducer, []);
+
+  console.log("categories:", categories);
 
   const getProfile = async () => {
     try {
@@ -45,7 +65,6 @@ function App() {
       toast("Login/Signup first", { type: "warning" });
     }
   };
-  console.log("Profile : ", profile);
 
   // Get movies
   const getMovies = async (dispatch) => {
@@ -127,6 +146,73 @@ function App() {
       : addToWishlist(movie._id);
   };
 
+  // Get movies based on categories
+  const searchMovies = async (category) => {
+    setLoading(true);
+
+    let newCategories;
+
+    // if (category) {
+    //   if (categories.includes(category)) {
+    //     newCategories = categories.filter((e) => e !== category);
+    //     console.log("newCategories", newCategories);
+    //     setCategories(newCategories);
+    //   } else {
+    //     newCategories = [...categories, category];
+    //     setCategories([...categories, category]);
+    //   }
+    // }else{
+    // newCategories =categories
+    // }
+
+    // eslint-disable-next-line no-unused-expressions
+    category
+      ? categories.includes(category)
+        ? ((newCategories = categories.filter((e) => e !== category)),
+          setCategories(newCategories))
+        : ((newCategories = [...categories, category]),
+          setCategories([...categories, category]))
+      : (newCategories = categories);
+
+    if (search) return queryMovies(newCategories);
+
+    try {
+      const { data } = await axios.post("/movie/get", {
+        categories: newCategories,
+      });
+      console.log("data: ", data);
+
+      dispatch({
+        type: GET_MOVIES,
+        payload: { movies: data.movies },
+      });
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      toast("Error in getting movies", { type: "error" });
+    }
+  };
+
+  // Search movies
+  const queryMovies = async (categories) => {
+    try {
+      const { data } = await axios.post(`/movie/search/${search}`, {
+        categories,
+      });
+
+      dispatch({
+        type: SEARCH_MOVIE,
+        payload: { movies: data.movies },
+      });
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      toast("Movie not found", { type: "info" });
+    }
+  };
+
   useEffect(() => {
     getMovies(dispatch);
   }, [dispatch]);
@@ -148,6 +234,12 @@ function App() {
           handleWishlist,
           addToWishlist,
           removeFromWishlist,
+          categories,
+          setCategories,
+          search,
+          setSearch,
+          searchMovies,
+          categoryList,
         }}
       >
         <AnimatePresence exitBeforeEnter>

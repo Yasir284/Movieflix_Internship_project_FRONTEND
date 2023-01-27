@@ -25,7 +25,7 @@ export default function Watchlist() {
   }, [movies]);
 
   return (
-    <motion.div className="mx-auto h-[90vh] basis-[75vw] transition-all duration-200 ease-in-out">
+    <motion.div className="h-[90vh] md:mx-auto md:basis-[75vw]">
       <div className="mt-2 flex flex-row items-center justify-center gap-4 border-b-2 pb-4">
         <MdStars className="text-yellow-500" size="2rem" />
         <h1 className="text-3xl font-bold">Top Rated Movies</h1>

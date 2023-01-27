@@ -120,14 +120,53 @@ export default function AdminSection() {
 
   return (
     <motion.div {...containerVarient}>
-      <div className="mx-12 text-gray-100">
+      <div className="mx-2 text-gray-100 md:mx-12">
         {/* Heading */}
         <div className="w-full flex-col items-center justify-center">
-          <h2 className="mb-6 text-center text-3xl font-semibold leading-tight">
-            ALL MOVIES
-          </h2>
-          <div className="mb-4 flex flex-row items-center justify-between">
-            <div className="flex w-full flex-row items-center justify-between">
+          {/* Category */}
+          <form className="mx-auto mb-4 mt-2 w-fit bg-black-900">
+            <select
+              name="category"
+              className="bg-black-900 text-2xl font-bold text-white"
+              onChange={queryMovies}
+              ref={categoryRef}
+            >
+              <option value="ALL">ALL MOVIES</option>
+              <option value="ACTION">ACTION</option>
+              <option value="COMEDY">COMEDY</option>
+              <option value="ROMANCE">ROMANCE</option>
+              <option value="SCI-FI">SCI-FI</option>
+              <option value="HORROR">HORROR</option>
+              <option value="CRIME THRILLER">CRIME THRILLER</option>
+              <option value="ADVENTURE">ADVENTURE</option>
+              <option value="REAL LIFE">REAL LIFE</option>
+            </select>
+          </form>
+
+          <div className="mb-4 text-sm">
+            {/* Search */}
+            <form
+              onSubmit={queryMovies}
+              className="relative mx-auto mb-4 w-1/2"
+            >
+              <span className="absolute inset-y-0 left-0 flex items-center py-4">
+                <button
+                  type="submit"
+                  className="p-2 focus:outline-none focus:ring"
+                >
+                  <BiSearchAlt size="1.5rem" className="text-black-400" />
+                </button>
+              </span>
+              <input
+                ref={searchRef}
+                type="search"
+                name="Search"
+                placeholder="Search..."
+                className="mx-auto w-full rounded-full border-2 border-black-400 bg-black-900 py-2 pl-10 text-sm text-gray-100 focus:bg-black"
+              />
+            </form>
+
+            <div className="flex w-full flex-row flex-wrap justify-between">
               <NavLink to={"/home"}>
                 <div className="group flex flex-row items-center gap-2 rounded-3xl border-2 border-black-400 py-2 px-3 text-black-400 transition-all duration-200 ease-in-out hover:border-white hover:text-white">
                   <MdKeyboardArrowLeft
@@ -138,62 +177,20 @@ export default function AdminSection() {
                 </div>
               </NavLink>
 
-              <div className="flex flex-row gap-2">
-                {/* Search */}
-                <form onSubmit={queryMovies} className="relative rounded-full">
-                  <span className="absolute inset-y-0 left-0 flex items-center py-4">
-                    <button
-                      type="submit"
-                      className="p-2 focus:outline-none focus:ring"
-                    >
-                      <BiSearchAlt size="1.5rem" className="text-black-400" />
-                    </button>
-                  </span>
-                  <input
-                    ref={searchRef}
-                    type="search"
-                    name="Search"
-                    placeholder="Search..."
-                    className="rounded-full border-2 border-black-400 bg-black-900 py-2 pr-3 pl-10 text-sm text-gray-100 focus:bg-black"
-                  />
-                </form>
-
-                {/* Category */}
-                <form className="rounded-full bg-blue-500 px-4 py-2">
-                  <label htmlFor="category">Category : </label>
-                  <select
-                    name="category"
-                    className="rounded-full text-xs text-black"
-                    onChange={queryMovies}
-                    ref={categoryRef}
-                  >
-                    <option value="ALL">ALL</option>
-                    <option value="ACTION">ACTION</option>
-                    <option value="COMEDY">COMEDY</option>
-                    <option value="ROMANCE">ROMANCE</option>
-                    <option value="SCI-FI">SCI-FI</option>
-                    <option value="HORROR">HORROR</option>
-                    <option value="CRIME THRILLER">CRIME THRILLER</option>
-                    <option value="ADVENTURE">ADVENTURE</option>
-                    <option value="REAL LIFE">REAL LIFE</option>
-                  </select>
-                </form>
-
-                {/* Add movie */}
-                <button
-                  onClick={() => setToggleAddMovie(true)}
-                  className="flex flex-row items-center rounded-full bg-my-red py-2 px-4 transition-all duration-200 ease-in-out active:scale-90"
-                >
-                  <MdAdd size="1.5rem" />
-                  <h2>Add Movie</h2>
-                </button>
-              </div>
+              {/* Add movie */}
+              <button
+                onClick={() => setToggleAddMovie(true)}
+                className="flex flex-row items-center rounded-full bg-my-red py-2 px-4 transition-all duration-200 ease-in-out active:scale-90"
+              >
+                <MdAdd size="1.5rem" />
+                <h2>Add Movie</h2>
+              </button>
             </div>
           </div>
         </div>
 
         {/* Movies Table */}
-        <div className="custome-scroll h-[68.2vh] overflow-y-auto rounded-sm">
+        <div className="custome-scroll h-[64vh] overflow-auto rounded-sm">
           <table className="min-w-full rounded-sm text-xs">
             <thead className="bg-gray-700">
               <tr className="text-left">

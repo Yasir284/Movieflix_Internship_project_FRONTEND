@@ -1,5 +1,5 @@
 // Dependencies and React hooks
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -26,9 +26,6 @@ import { BiSearchAlt, BiMenu } from "react-icons/bi";
 // Components
 import Profile from "./sub-components/Profile";
 
-// Utils
-import { GET_MOVIES, SEARCH_MOVIE } from "../utils/action.types";
-
 // Contexts
 import { MovieContext } from "../contexts/MovieContext";
 import { UserContext } from "../contexts/UserContext";
@@ -41,27 +38,13 @@ const contarientVarient = {
   transition: { type: "keyframes" },
 };
 
-// Movies categories list array
-let categoryList = [
-  "ACTION",
-  "COMEDY",
-  "ROMANCE",
-  "SCI-FI",
-  "HORROR",
-  "CRIME THRILLER",
-  "ADVENTURE",
-  "REAL LIFE",
-];
-
 export default function MenuBar() {
-  const { dispatch } = useContext(MovieContext);
+  const { categories, search, setSearch, searchMovies, categoryList } =
+    useContext(MovieContext);
   const { profile, setProfile, setLoading } = useContext(UserContext);
 
   const [activeSideBar, setActiveSidebar] = useState(true);
-  const [categories, setCategories] = useState([]);
   console.log("categories:", categories);
-
-  const searchRef = useRef();
 
   const navigate = useNavigate();
 
@@ -72,7 +55,6 @@ export default function MenuBar() {
       icon: MdOutlineHome,
       activeIcon: MdHome,
       size: "1.5rem",
-      style: "text-black-400",
       name: "Home",
       active: true,
       handleClick() {
@@ -132,79 +114,6 @@ export default function MenuBar() {
 
   const [activeId, setAcitveId] = useState(menuList[0].id);
 
-  // Get movies based on categories
-  const getMovies = async (category) => {
-    setLoading(true);
-
-    const search = searchRef.current.value;
-
-    let newCategories;
-
-    // if (category) {
-    //   if (categories.includes(category)) {
-    //     newCategories = categories.filter((e) => e !== category);
-    //     console.log("newCategories", newCategories);
-    //     setCategories(newCategories);
-    //   } else {
-    //     newCategories = [...categories, category];
-    //     setCategories([...categories, category]);
-    //   }
-    // }else{
-    // newCategories =categories
-    // }
-
-    // eslint-disable-next-line no-unused-expressions
-    category
-      ? categories.includes(category)
-        ? ((newCategories = categories.filter((e) => e !== category)),
-          setCategories(newCategories))
-        : ((newCategories = [...categories, category]),
-          setCategories([...categories, category]))
-      : (newCategories = categories);
-
-    if (search) return queryMovies(newCategories);
-
-    try {
-      const { data } = await axios.post("/movie/get", {
-        categories: newCategories,
-      });
-      console.log("data: ", data);
-
-      dispatch({
-        type: GET_MOVIES,
-        payload: { movies: data.movies },
-      });
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-      toast("Error in getting movies", { type: "error" });
-    }
-  };
-
-  // Search movies
-  const queryMovies = async (categories) => {
-    const search = searchRef.current.value;
-
-    console.log("categories in queryMovies", categories);
-
-    try {
-      const { data } = await axios.post(`/movie/search/${search}`, {
-        categories,
-      });
-
-      dispatch({
-        type: SEARCH_MOVIE,
-        payload: { movies: data.movies },
-      });
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-      toast("Movie not found", { type: "info" });
-    }
-  };
-
   // Logout user
   const handleLogout = async () => {
     setLoading(true);
@@ -214,6 +123,7 @@ export default function MenuBar() {
       console.log("Logged out: ", data);
       setProfile(null);
       setLoading(false);
+      sessionStorage.clear();
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -226,7 +136,7 @@ export default function MenuBar() {
     <AnimatePresence>
       <div
         onClick={() => setActiveSidebar(!activeSideBar)}
-        className="group absolute top-[2.5vh] right-10 z-30 flex items-center justify-center rounded-md shadow-lg shadow-black transition-all duration-200 ease-in-out active:scale-90"
+        className="group absolute right-10 top-0 z-30 flex h-[8vh] items-center justify-center rounded-md shadow-lg shadow-black transition-all duration-200 ease-in-out active:scale-90 md:h-[10vh]"
       >
         <button className="transition-all duration-200 ease-in-out group-active:scale-75">
           {!activeSideBar ? <BiMenu size="2rem" /> : <MdClose size="2rem" />}
@@ -237,7 +147,7 @@ export default function MenuBar() {
         <motion.nav
           key={activeSideBar}
           {...contarientVarient}
-          className="h-[90vh] w-[19rem] bg-black-500 p-3 text-gray-100"
+          className="fixed top-[8vh] right-0 z-30 h-[92vh] w-[60vw] bg-black-500 bg-opacity-50 p-3 text-gray-100 backdrop-blur-sm backdrop-filter sm:w-[50vw] md:static md:top-[10vh] md:h-[90vh] md:w-[19rem] md:bg-opacity-100"
         >
           <div className="flex flex-col">
             <div className="space-y-3">
@@ -250,9 +160,9 @@ export default function MenuBar() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  getMovies();
+                  searchMovies();
                 }}
-                className="relative"
+                className="relative hidden md:block"
               >
                 <span className="absolute inset-y-0 left-0 flex items-center py-4">
                   <button
@@ -263,7 +173,8 @@ export default function MenuBar() {
                   </button>
                 </span>
                 <input
-                  ref={searchRef}
+                  onChange={(e) => setSearch(e.target.value)}
+                  value={search}
                   type="search"
                   name="Search"
                   placeholder="Search..."
@@ -282,7 +193,7 @@ export default function MenuBar() {
                       className={`my-2 flex cursor-pointer flex-row items-end justify-start gap-2 rounded-sm border-r-2 border-transparent py-1 px-2 transition-all duration-300 ease-out hover:bg-black-900 ${
                         activeId === list.id
                           ? "border-my-red bg-black-900 font-semibold text-white"
-                          : list.style
+                          : "text-white md:text-black-400"
                       }`}
                     >
                       {activeId === list.id ? (
@@ -301,17 +212,17 @@ export default function MenuBar() {
             </div>
 
             {/* Category */}
-            <div className="mt-4 border-b border-black-400 pb-4">
+            <div className="mt-4 hidden border-b border-black-400 pb-4 md:block">
               <p className="mb-2 text-xs font-light text-black-400">GENER</p>
 
-              <ul className="flex flex-row flex-wrap justify-between gap-3">
+              <ul className="grid grid-cols-2 gap-3">
                 {categoryList.map((list, index) => (
                   <li
                     key={index}
                     onClick={() => {
-                      getMovies(list);
+                      searchMovies(list);
                     }}
-                    className="w-32 transition-all duration-200 ease-in-out active:scale-90"
+                    className="col-span-1 transition-all duration-200 ease-in-out active:scale-90"
                   >
                     <div
                       className={`flex cursor-pointer flex-row items-center justify-between rounded-3xl px-3 py-2 text-xs font-light transition-all duration-300 ease-in-out ${

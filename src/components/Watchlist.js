@@ -35,7 +35,7 @@ export default function Watchlist() {
   }, [movies, profile]);
 
   return (
-    <motion.div className="mx-auto h-[90vh] basis-[75vw] transition-all duration-200 ease-in-out">
+    <motion.div className="mx-auto h-[90vh] md:basis-[75vw]">
       <div className="mt-2 flex flex-row justify-center gap-4 border-b-2 pb-4">
         <MdBookmarks size="2rem" />
         <h1 className="text-3xl font-bold">Your Watchlist</h1>

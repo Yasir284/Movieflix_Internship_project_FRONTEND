@@ -38,9 +38,9 @@ export default function MovieDetail({ active, setActive }) {
   return (
     <motion.div
       {...containerVaritent}
-      className="fixed top-0 left-0 z-50 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-5 p-2 text-white backdrop-blur-sm"
+      className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center overflow-y-auto bg-black bg-opacity-5 text-white backdrop-blur-sm md:p-2"
     >
-      <div className="relative bg-[#1f1f1f]  px-10 py-10 md:px-20">
+      <div className="relative h-fit bg-[#1f1f1f] px-4 py-10 md:px-20">
         {/* Close button */}
         <button
           className="absolute top-2 right-2 border transition-all duration-200 ease-in-out active:scale-90"
@@ -50,8 +50,10 @@ export default function MovieDetail({ active, setActive }) {
         </button>
 
         {/* Heading */}
-        <div className="mb-6 flex flex-row items-center justify-between">
-          <h1 className="text-3xl font-bold">{active.movie?.name}</h1>
+        <div className="mb-6 mt-2 flex flex-col items-center justify-center gap-4 md:mt-0 md:flex-row md:justify-between">
+          <h1 className="text-center text-2xl font-bold md:text-left md:text-3xl">
+            {active.movie?.name}
+          </h1>
 
           <div className="flex flex-row gap-6">
             {/* Rating */}
@@ -77,7 +79,7 @@ export default function MovieDetail({ active, setActive }) {
         </div>
 
         {/* Movie Trailer and poster */}
-        <div className="flex flex-row justify-between gap-3">
+        <div className="flex flex-row justify-center gap-3 md:justify-between">
           <img
             className="hidden h-[21.25rem] w-[14rem] shadow-md shadow-black lg:block"
             src={active.movie?.image?.secure_url}
@@ -85,7 +87,7 @@ export default function MovieDetail({ active, setActive }) {
           />
 
           <iframe
-            className="aspect-video w-[400px] shadow-md shadow-black sm:w-[500px] md:w-[600px]"
+            className="aspect-video w-[350px] shadow-md shadow-black sm:w-[500px] md:w-[600px]"
             // width="600"
             // height="340"
             src={active.movie.trailerUrl + "?mute=1&loop=1&autoplay=1"}
@@ -96,16 +98,16 @@ export default function MovieDetail({ active, setActive }) {
           ></iframe>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3">
+        <div className="mt-10 grid grid-cols-2 gap-3 md:mt-6">
           {/* Movie description */}
-          <div className="col-span-full flex flex-col gap-1 lg:col-span-1">
+          <div className="order-2 col-span-full mt-6 flex flex-col gap-1 md:order-none md:m-0 lg:col-span-1">
             <p className="text-sm font-semibold text-black-400">DESCRIPTION</p>
 
             <p className="max-w-md">{active.movie?.description}</p>
           </div>
 
           {/* Streaming platform */}
-          <div className="col-span-full flex flex-col gap-2 lg:col-span-1 lg:pl-20">
+          <div className="order-1 col-span-full flex flex-col gap-4 md:order-none md:gap-2 lg:col-span-1 lg:pl-20">
             <div className="rounded-sm bg-[#f5c518] text-black">
               <a
                 href={active.movie.streamingPlatform}

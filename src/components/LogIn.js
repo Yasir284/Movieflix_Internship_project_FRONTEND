@@ -54,6 +54,7 @@ export default function LogIn() {
         return navigate("/admin");
       }
 
+      sessionStorage.setItem("bearerToken", "Bearer " + data.token);
       setLoading(false);
       navigate("/");
     } catch (err) {

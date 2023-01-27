@@ -2,10 +2,10 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 // React Icons
-import { MdDelete, MdEditNote } from "react-icons/md";
+import { MdDelete, MdEditNote, MdInfo } from "react-icons/md";
 
 // Contexts
 import { MovieContext } from "../../contexts/MovieContext";
@@ -17,11 +17,17 @@ import EditMovie from "../modals/EditMovie";
 // Utils
 import { DELETE_MOVIE } from "../../utils/action.types";
 
+// Framer motion animation varitents
+const varient = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+};
+
 export default function TableColumns({ movie, index }) {
   const [toggleEditMovie, setToggleEditMovie] = useState(false);
   const { dispatch } = useContext(MovieContext);
   const { setLoading } = useContext(UserContext);
-
+  const [active, setActive] = useState(false);
   // Delete movie
   const deleteMovie = async () => {
     setLoading(true);
@@ -89,8 +95,16 @@ export default function TableColumns({ movie, index }) {
           </a>
         </div>
       </td>
-      <td className="h-auto max-w-lg p-3">
-        <p>{movie.description}</p>
+      <td className="relative p-3">
+        <MdInfo onClick={() => setActive(!active)} size="1.5rem" className="" />
+        {active && (
+          <motion.p
+            {...varient}
+            className="absolute -top-10 -left-40 w-[35vw] rounded-sm bg-black py-2 px-4 shadow-md shadow-black"
+          >
+            {movie.description}
+          </motion.p>
+        )}
       </td>
       <td className="p-3">
         <p
