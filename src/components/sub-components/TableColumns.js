@@ -56,7 +56,7 @@ export default function TableColumns({ movie, index }) {
         <p>{index + 1}</p>
       </td>
       <td className="p-3">
-        <p>{movie.name}</p>
+        <p className="w-fit">{movie.name}</p>
       </td>
       <td className="p-3">
         <p>{movie.rating.toFixed(1)}</p>
@@ -89,7 +89,7 @@ export default function TableColumns({ movie, index }) {
           </a>
         </div>
       </td>
-      <td className="h-auto max-w-[15rem] p-3">
+      <td className="h-auto max-w-lg p-3">
         <p>{movie.description}</p>
       </td>
       <td className="p-3">

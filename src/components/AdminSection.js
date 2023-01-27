@@ -26,6 +26,13 @@ const containerVarient = {
   animate: { opacity: 1 },
   exit: { opacity: 0 },
 };
+const tableRowVaritent = {
+  initial: { opacity: 0 },
+  whileInView: {
+    opacity: 1,
+    transition: { duration: 0.4 },
+  },
+};
 
 export default function AdminSection() {
   const [toggleAddMovie, setToggleAddMovie] = useState(false);
@@ -113,7 +120,7 @@ export default function AdminSection() {
 
   return (
     <motion.div {...containerVarient}>
-      <div className="container mx-auto mb-4 p-2 text-gray-100 sm:p-4">
+      <div className="mx-12 text-gray-100">
         {/* Heading */}
         <div className="w-full flex-col items-center justify-center">
           <h2 className="mb-6 text-center text-3xl font-semibold leading-tight">
@@ -186,8 +193,8 @@ export default function AdminSection() {
         </div>
 
         {/* Movies Table */}
-        <div className="custome-scroll h-[65vh] overflow-y-auto">
-          <table className="min-w-full text-xs">
+        <div className="custome-scroll h-[68.2vh] overflow-y-auto rounded-sm">
+          <table className="min-w-full rounded-sm text-xs">
             <thead className="bg-gray-700">
               <tr className="text-left">
                 <th className="p-3">Serial No. </th>
@@ -199,15 +206,17 @@ export default function AdminSection() {
                 <th className="p-3">Delete</th>
               </tr>
             </thead>
+
             {movies && movies.length > 0 ? (
-              <tbody className="relative">
+              <tbody>
                 {movies.map((movie, index) => (
-                  <tr
+                  <motion.tr
+                    {...tableRowVaritent}
                     key={index}
-                    className="border-b border-gray-700 border-opacity-20 bg-gray-900"
+                    className="border-b border-slate-300 border-opacity-20 bg-gray-900"
                   >
                     <TableColumns movie={movie} index={index} />
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             ) : (

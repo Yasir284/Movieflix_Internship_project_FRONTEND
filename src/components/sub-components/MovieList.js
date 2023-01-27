@@ -9,6 +9,7 @@ import { FaStar } from "react-icons/fa";
 // Contexts
 import { MovieContext } from "../../contexts/MovieContext";
 import { UserContext } from "../../contexts/UserContext";
+import { toast } from "react-toastify";
 
 // Framer motion animation varients
 const listVaritent = {
@@ -63,7 +64,13 @@ export default function MovieList({ movies, setMovieDetails }) {
 
                     {/* Wishlist */}
                     <button
-                      onClick={() => handleWishlist(movie)}
+                      onClick={() => {
+                        profile
+                          ? handleWishlist(movie)
+                          : toast("Login / Signup required", {
+                              type: "warning",
+                            });
+                      }}
                       className="rounded-full border border-transparent bg-white p-2 text-black  transition-all duration-200 ease-in-out hover:border-white hover:bg-transparent hover:text-white active:scale-90"
                     >
                       {profile &&
