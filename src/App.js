@@ -28,9 +28,9 @@ const MainSection = lazy(() => import("./components/MainSection"));
 
 axios.defaults.baseURL = "http://192.168.0.108:4000/api";
 axios.defaults.withCredentials = true;
-// axios.defaults.headers = {
-//   Authorization: sessionStorage.getItem("bearerToken"),
-// };
+axios.defaults.headers = {
+  Authorization: sessionStorage.getItem("bearerToken"),
+};
 
 // Movies categories list array
 let categoryList = [

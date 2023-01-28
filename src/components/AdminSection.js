@@ -125,7 +125,6 @@ export default function AdminSection() {
 
   return (
     <>
-      {" "}
       <motion.div {...containerVarient}>
         <div className="mx-2 text-gray-100 md:mx-12">
           {/* Heading */}
