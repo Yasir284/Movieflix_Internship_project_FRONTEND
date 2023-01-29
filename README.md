@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+![badge](https://img.shields.io/badge/MADE%20WITH-MERN-blue)
+[![badge](https://img.shields.io/badge/SEE%20DEMO%20-VISIT-green)](https://moviefilx.netlify.app/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Movieflix app
 
-## Available Scripts
+- This is a internship project. In this project I have made a **Movieflix App** with MERN, which reccomends you movies based on selected categories which contains movie streaming platform link, trailer, description, IMDb rating and you can add movies to your watch list.
 
-In the project directory, you can run:
+- I have hosted this website on Netlify, please find the link below:
 
-### `npm start`
+  [![frontend link](https://img.shields.io/badge/LINK%20OF-PROJECT-red)](https://moviefilx.netlify.app/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Click the link below to see backend repository:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  [![Backend link](https://img.shields.io/badge/BACKEND-green)](https://movieflix-backend.onrender.com)
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Features
 
-### `npm run build`
+- Authentication.
+- Admin section which can add, delete and update movies.
+- Add movies to your watchlist.
+- You can see movie trailer, description, IMDb rating and movie platform.
+- Responsive for small and medium screens.
+- It reccomends movies based on selected categories.
+- You can also search movies based on movie name.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠 Skills learned
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- To use mongodb and mongoose.
+- To use react router dom.
+- To use react hooks.
+- To deploy backend.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 💻 Technologies used
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- React.js for frontend.
+- React router dom for client side routing.
+- Express.js and Node.js for backend.
+- mongoose and mongodb for database.
+- Framer motion for some animations.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🎥 Screenshot
 
-## Learn More
+- Home page
+  ![Homepage-image](./movieflix-screeshots/movieflix-homepage.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Watchlist section
+  ![Watchlist-image](./movieflix-screeshots/movieflix-watchlist.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Toprated section
+  ![Toprated-image](./movieflix-screeshots/movieflix-toprated.png)
 
-### Code Splitting
+- Admin section
+  ![Adminsection-image](./movieflix-screeshots/movieflix-adminsection.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Movie details modal
+  ![Movie details modal-image](./movieflix-screeshots/movie-details.png)
 
-### Analyzing the Bundle Size
+- Add movie modal
+  ![Add movie modal-image](./movieflix-screeshots/movieflix-addmovie.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Edit movie modal
+  ![Edit movie modal-image](./movieflix-screeshots/movieflix-editmovie.png)
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 👨‍💻 About Me
 
-### Advanced Configuration
+### Hey, I am Yasir lambawala
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- I am a fullstack Javascript web developer with proficiency in frontend from Gujarat. I have done my Btech at GTU university and I am currently exploring backend-development.
 
-### Deployment
+- Connect with me on:
+  - [Linkedin](https://www.linkedin.com/in/yasir-lambawala-2b216a1b9/)
+  - [Instagram](https://www.instagram.com/web_dev_yasir/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Feedback
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- If you have any feedback, please reach me at lambawalay@gmail.com
