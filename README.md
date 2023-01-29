@@ -11,7 +11,7 @@
 
 - Click the link below to see backend repository:
 
-  [![Backend link](https://img.shields.io/badge/BACKEND-green)](https://movieflix-backend.onrender.com)
+  [![Backend link](https://img.shields.io/badge/BACKEND-green)](https://github.com/Yasir284/Movieflix_Internship_Project_Backend)
 
 ---
 
