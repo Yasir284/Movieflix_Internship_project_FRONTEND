@@ -26,7 +26,7 @@ const TopRated = lazy(() => import("./components/TopRated"));
 const Watchlist = lazy(() => import("./components/Watchlist"));
 const MainSection = lazy(() => import("./components/MainSection"));
 
-axios.defaults.baseURL = "http://192.168.0.108:4000/api";
+axios.defaults.baseURL = "https://movieflix-backend.onrender.com/api";
 axios.defaults.withCredentials = true;
 axios.defaults.headers = {
   Authorization: sessionStorage.getItem("bearerToken"),
