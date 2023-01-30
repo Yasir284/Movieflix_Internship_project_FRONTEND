@@ -1,12 +1,12 @@
 // Dependencies and React hooks
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
 // React Icons
-import { MdArrowBack } from "react-icons/md";
+import { MdArrowBack, MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 // Contexts
 import { UserContext } from "../contexts/UserContext";
@@ -21,6 +21,8 @@ export default function SignUp() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const nameRef = useRef();
+
+  const [hide, setHide] = useState(false);
 
   const navigate = useNavigate();
 
@@ -103,13 +105,22 @@ export default function SignUp() {
           {/* Password */}
           <div>
             <div className="mb-2 flex justify-between">
-              <label htmlFor="password" className="text-sm">
-                Password
+              <label
+                htmlFor="password"
+                onClick={() => setHide(!hide)}
+                className="flex flex-row items-center justify-center gap-4 text-sm"
+              >
+                <p>Password</p>
+                {hide ? (
+                  <MdVisibility size="1.2rem" />
+                ) : (
+                  <MdVisibilityOff size="1.2rem" />
+                )}
               </label>
             </div>
             <input
               ref={passwordRef}
-              type="password"
+              type={hide ? "text" : "password"}
               name="password"
               id="password"
               placeholder="Enter password"

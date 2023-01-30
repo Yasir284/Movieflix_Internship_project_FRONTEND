@@ -1,12 +1,12 @@
 // Dependencies and React hooks
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
 // React Icons
-import { MdArrowBack } from "react-icons/md";
+import { MdArrowBack, MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 // Contexts
 import { UserContext } from "../contexts/UserContext";
@@ -20,6 +20,8 @@ const buttonVaritent = {
 export default function LogIn() {
   const emailRef = useRef();
   const passwordRef = useRef();
+
+  const [hide, setHide] = useState(false);
 
   const navigate = useNavigate();
 
@@ -92,13 +94,22 @@ export default function LogIn() {
           {/* Password */}
           <div>
             <div className="mb-2 flex justify-between">
-              <label htmlFor="password" className="text-sm">
-                Password
+              <label
+                onClick={() => setHide(!hide)}
+                htmlFor="password"
+                className="flex flex-row items-center justify-center gap-4 text-sm"
+              >
+                <p>Password</p>
+                {hide ? (
+                  <MdVisibility size="1.2rem" />
+                ) : (
+                  <MdVisibilityOff size="1.2rem" />
+                )}
               </label>
             </div>
             <input
               ref={passwordRef}
-              type="password"
+              type={hide ? "text" : "password"}
               name="password"
               id="password"
               placeholder="Enter password"
