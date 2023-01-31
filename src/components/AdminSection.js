@@ -208,6 +208,7 @@ export default function AdminSection() {
                 </tr>
               </thead>
 
+              {/* Movies row */}
               {movies && movies.length > 0 ? (
                 <tbody>
                   {movies.map((movie, index) => (
