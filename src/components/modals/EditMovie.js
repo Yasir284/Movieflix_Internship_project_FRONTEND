@@ -62,7 +62,6 @@ export default function EditMovie({ active, movie, setActive }) {
       formData.append("movieImage", image);
     }
 
-    console.log(formData);
     try {
       const { data } = await axios({
         method: "put",
@@ -70,8 +69,6 @@ export default function EditMovie({ active, movie, setActive }) {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-
-      console.log(data);
 
       dispatch({
         type: EDIT_MOVIE,
@@ -85,8 +82,6 @@ export default function EditMovie({ active, movie, setActive }) {
 
       setActive(false);
     } catch (err) {
-      console.log(err);
-
       setLoading(false);
       toast("Error in editing movie", { type: "error" });
     }

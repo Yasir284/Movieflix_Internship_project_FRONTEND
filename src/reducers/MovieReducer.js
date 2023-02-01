@@ -11,7 +11,6 @@ const MovieReducer = (state, action) => {
     // Get movies
     case GET_MOVIES:
       state = action.payload.movies;
-      console.log("state: ", state);
       break;
 
     // Add movies

@@ -42,9 +42,6 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
 
   // Image upload
   const fileUpload = (e) => {
-    console.log("hello");
-    console.log(e.target.files[0]);
-
     setImage(e.target.files[0]);
   };
 
@@ -77,8 +74,6 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
       formData.append("movieImage", image);
     }
 
-    console.log(formData);
-
     try {
       const { data } = await axios({
         method: "post",
@@ -86,7 +81,6 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log(data);
 
       dispatch({ type: ADD_MOVIE, payload: { movie: data.movie } });
 
@@ -100,7 +94,6 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
       setLoading(false);
       toast("Movie added successfully", { type: "success" });
     } catch (err) {
-      console.log(err);
       setLoading(false);
     }
   };

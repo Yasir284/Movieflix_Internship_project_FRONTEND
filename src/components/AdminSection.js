@@ -52,7 +52,6 @@ export default function AdminSection() {
 
     try {
       const { data } = await axios.post("/movie/get");
-      console.log("data: ", data);
 
       dispatch({
         type: GET_MOVIES,
@@ -60,7 +59,6 @@ export default function AdminSection() {
       });
       setLoading(false);
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Error in getting movies", { type: "error" });
     }
@@ -69,7 +67,6 @@ export default function AdminSection() {
   useEffect(() => {
     getMovies(dispatch, setLoading);
   }, [dispatch, setLoading]);
-  console.log("movies: ", movies);
 
   // Filter movies based on category
   const filterMovies = async (category) => {
@@ -79,15 +76,12 @@ export default function AdminSection() {
           ? await axios.post("/movie/get")
           : await axios.post("/movie/get", { categories: [category] });
 
-      console.log("data: ", data);
-
       dispatch({
         type: GET_MOVIES,
         payload: { movies: data.movies },
       });
       setLoading(false);
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Error in getting movies", { type: "error" });
     }
@@ -117,7 +111,6 @@ export default function AdminSection() {
       });
       setLoading(false);
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Movie not found", { type: "info" });
     }

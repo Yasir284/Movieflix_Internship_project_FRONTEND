@@ -44,7 +44,6 @@ export default function LogIn() {
     try {
       const { data } = await axios.post("/auth/login", payload);
 
-      console.log(data);
       setProfile(data.user);
 
       emailRef.current.value = "";
@@ -60,7 +59,6 @@ export default function LogIn() {
       setLoading(false);
       navigate("/");
     } catch (err) {
-      console.log(err.message);
       setLoading(false);
       return toast("Invalid Credentials", { type: "error" });
     }

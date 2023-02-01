@@ -30,8 +30,6 @@ export default function MovieDetail({ active, setActive }) {
   const updateWishlist = async () => {
     let updatedMovie = await handleWishlist(active.movie);
 
-    console.log("inside updateWishlist", updatedMovie);
-
     active.movie = updatedMovie;
   };
 

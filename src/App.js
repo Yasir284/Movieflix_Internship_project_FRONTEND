@@ -54,14 +54,11 @@ function App() {
 
   const [movies, dispatch] = useReducer(MovieReducer, []);
 
-  console.log("categories:", categories);
-
   const getProfile = async () => {
     try {
       const { data } = await axios.get("/auth/profile");
       setProfile(data.user);
     } catch (err) {
-      console.log(err.message);
       toast("Login/Signup first", { type: "warning" });
     }
   };
@@ -72,7 +69,6 @@ function App() {
 
     try {
       const { data } = await axios.post("/movie/get");
-      console.log("data: ", data);
 
       dispatch({
         type: GET_MOVIES,
@@ -80,7 +76,6 @@ function App() {
       });
       setLoading(false);
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Error in getting movies", { type: "error" });
     }
@@ -94,7 +89,6 @@ function App() {
       const { data } = await axios.put(`movie/update/add_wishlist/${movieId}`, {
         userId: profile._id,
       });
-      console.log(data);
 
       dispatch({
         type: EDIT_MOVIE,
@@ -105,7 +99,6 @@ function App() {
       setLoading(false);
       return data.movie;
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Error in adding movie to wishlist", { type: "error" });
     }
@@ -122,7 +115,6 @@ function App() {
           userId: profile._id,
         }
       );
-      console.log(data);
 
       dispatch({
         type: EDIT_MOVIE,
@@ -133,7 +125,6 @@ function App() {
       setLoading(false);
       return data.movie;
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Error in removing movie from wishlist", { type: "error" });
     }
@@ -152,19 +143,6 @@ function App() {
 
     let newCategories;
 
-    // if (category) {
-    //   if (categories.includes(category)) {
-    //     newCategories = categories.filter((e) => e !== category);
-    //     console.log("newCategories", newCategories);
-    //     setCategories(newCategories);
-    //   } else {
-    //     newCategories = [...categories, category];
-    //     setCategories([...categories, category]);
-    //   }
-    // }else{
-    // newCategories =categories
-    // }
-
     // eslint-disable-next-line no-unused-expressions
     category
       ? categories.includes(category)
@@ -180,7 +158,6 @@ function App() {
       const { data } = await axios.post("/movie/get", {
         categories: newCategories,
       });
-      console.log("data: ", data);
 
       dispatch({
         type: GET_MOVIES,
@@ -188,7 +165,6 @@ function App() {
       });
       setLoading(false);
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Error in getting movies", { type: "error" });
     }
@@ -207,7 +183,6 @@ function App() {
       });
       setLoading(false);
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Movie not found", { type: "info" });
     }

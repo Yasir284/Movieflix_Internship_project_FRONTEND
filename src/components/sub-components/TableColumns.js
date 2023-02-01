@@ -29,11 +29,9 @@ export default function TableColumns({ movie, index, setToggleEditMovie }) {
     setLoading(true);
 
     try {
-      const { data } = await axios.put(`/movie/delete/${movie._id}`, {
+      await axios.put(`/movie/delete/${movie._id}`, {
         public_id: movie.image.public_id,
       });
-
-      console.log(data);
 
       dispatch({
         type: DELETE_MOVIE,
@@ -46,7 +44,6 @@ export default function TableColumns({ movie, index, setToggleEditMovie }) {
 
       toast("Movie Deleted", { type: "info" });
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Failed to delete the movie", { type: "error" });
     }

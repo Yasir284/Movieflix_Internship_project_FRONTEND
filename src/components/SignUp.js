@@ -56,7 +56,6 @@ export default function SignUp() {
       setLoading(false);
       navigate("/");
     } catch (err) {
-      console.log(err.message);
       setLoading(false);
       return toast("Invalid Credentials", { type: "error" });
     }

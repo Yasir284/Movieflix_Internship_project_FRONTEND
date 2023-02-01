@@ -44,7 +44,6 @@ export default function MenuBar() {
   const { profile, setProfile, setLoading } = useContext(UserContext);
 
   const [activeSideBar, setActiveSidebar] = useState(true);
-  console.log("categories:", categories);
 
   const navigate = useNavigate();
 
@@ -119,14 +118,12 @@ export default function MenuBar() {
     setLoading(true);
 
     try {
-      const { data } = await axios("/auth/logout");
-      console.log("Logged out: ", data);
+      await axios("/auth/logout");
       setProfile(null);
       setLoading(false);
       sessionStorage.clear();
       navigate("/");
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast("Something went wrong", { type: "error" });
     }
