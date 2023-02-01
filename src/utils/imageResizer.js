@@ -17,7 +17,6 @@ const imageResizer = (movies) => {
 
     return movie;
   });
-  console.log("insider imageResizer :", movies);
 
   return movies;
 };
