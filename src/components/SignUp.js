@@ -44,6 +44,7 @@ export default function SignUp() {
 
     try {
       const { data } = await axios.post("/auth/signup", payload);
+      sessionStorage.setItem("bearerToken", `Bearer ${data.token}`);
 
       setProfile(data.user);
 
@@ -52,7 +53,6 @@ export default function SignUp() {
       passwordRef.current.value = "";
 
       toast("Logged in successfully", { type: "success" });
-      sessionStorage.setItem("bearerToken", "Bearer " + data.token);
       setLoading(false);
       navigate("/");
     } catch (err) {

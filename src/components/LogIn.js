@@ -44,6 +44,7 @@ export default function LogIn() {
     try {
       const { data } = await axios.post("/auth/login", payload);
 
+      sessionStorage.setItem("bearerToken", `Bearer ${data.token}`);
       setProfile(data.user);
 
       emailRef.current.value = "";
@@ -51,12 +52,11 @@ export default function LogIn() {
 
       toast("Logged in successfully", { type: "success" });
 
+      setLoading(false);
       if (data.user?.role === "ADMIN") {
         return navigate("/admin");
       }
 
-      sessionStorage.setItem("bearerToken", "Bearer " + data.token);
-      setLoading(false);
       navigate("/");
     } catch (err) {
       setLoading(false);
