@@ -149,7 +149,7 @@ export default function MenuBar() {
           <div className="flex flex-col">
             <div className="space-y-3">
               {/* Heading */}
-              <div className="inline-block">
+              <div className="content-start">
                 <Profile />
               </div>
 

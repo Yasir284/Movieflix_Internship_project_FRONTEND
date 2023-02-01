@@ -12,14 +12,14 @@ export default function Profile() {
   const { profile } = useContext(UserContext);
 
   return (
-    <div className="relative">
+    <>
       {profile ? (
-        <div className="flex cursor-pointer flex-row items-center justify-center gap-4 rounded-full border-2 border-transparent p-1 transition-all duration-200 ease-in-out hover:border-white active:scale-95">
+        <div className="flex flex-row items-center justify-start gap-4 rounded-full border border-transparent p-1 transition-all duration-200 ease-in-out hover:border-white active:scale-95">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-my-red text-lg font-bold">
             {profile.name && profile?.name[0].toUpperCase()}
           </div>
 
-          <div className="">
+          <div>
             <p className="leading-none">{profile.name}</p>
             <span className="text-xs text-black-400">{profile.email}</span>
           </div>
@@ -33,6 +33,6 @@ export default function Profile() {
           <p>Login / Signup</p>
         </NavLink>
       )}
-    </div>
+    </>
   );
 }
