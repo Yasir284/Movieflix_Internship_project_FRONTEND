@@ -70,7 +70,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
     formData.append("streamingPlatform", streamingPlatform);
     formData.append("description", description);
 
-    if (image) {
+    if (image !== null) {
       formData.append("movieImage", image);
     }
 
@@ -116,7 +116,7 @@ export default function AddMovie({ toggleAddMovie, setToggleAddMovie }) {
         <motion.div
           key={toggleAddMovie}
           {...containerVaritent}
-          className="fixed top-0 left-0 z-50 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-50 text-white backdrop-blur-sm md:p-2"
+          className="fixed top-0 left-0 z-40 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-50 text-white backdrop-blur-sm md:p-2"
         >
           <section className="mt-9 flex items-center justify-center md:mt-0">
             <form

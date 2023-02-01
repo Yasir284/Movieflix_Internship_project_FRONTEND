@@ -17,7 +17,7 @@ const MovieReducer = (state, action) => {
     // Add movies
     case ADD_MOVIE:
       let newMovie = imageResizer(action.payload.movie);
-      state = [...state, ...newMovie];
+      state = [...state, newMovie[0]];
       break;
 
     // Delete movies
@@ -27,10 +27,10 @@ const MovieReducer = (state, action) => {
 
     // Edit movies
     case EDIT_MOVIE:
-      let updatedMovie = imageResizer(action.payload.movie);
+      let updatedMovie = imageResizer([action.payload.movie]);
       state = state.map((e) => {
         if (e._id === action.payload.movie._id) {
-          return updatedMovie;
+          return updatedMovie[0];
         }
         return e;
       });

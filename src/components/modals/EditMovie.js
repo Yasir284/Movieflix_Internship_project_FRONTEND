@@ -92,7 +92,7 @@ export default function EditMovie({ active, movie, setActive }) {
       <motion.div
         key={active}
         {...containerVaritent}
-        className="fixed top-0 left-0 z-50 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-50 text-white backdrop-blur-sm md:p-2 lg:p-20"
+        className="fixed top-0 left-0 z-40 flex h-full w-full justify-center overflow-y-auto bg-black bg-opacity-50 text-white backdrop-blur-sm md:p-2 lg:p-20"
       >
         <section className="mt-9 flex items-center justify-center md:mt-0">
           <form

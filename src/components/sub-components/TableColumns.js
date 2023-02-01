@@ -29,9 +29,11 @@ export default function TableColumns({ movie, index, setToggleEditMovie }) {
     setLoading(true);
 
     try {
-      await axios.put(`/movie/delete/${movie._id}`, {
-        public_id: movie.image.public_id,
-      });
+      movie.image
+        ? await axios.put(`/movie/delete/${movie._id}`, {
+            public_id: movie.image.public_id,
+          })
+        : await axios.put(`/movie/delete/${movie._id}`);
 
       dispatch({
         type: DELETE_MOVIE,
@@ -73,7 +75,7 @@ export default function TableColumns({ movie, index, setToggleEditMovie }) {
           <a
             target="_blank"
             rel="noreferrer"
-            href={movie.image?.secure_url}
+            href={movie.image ? movie?.image?.secure_url : "/"}
             className="rounded-3xl bg-blue-600 py-1 px-3 text-xs transition-all duration-200 ease-in-out active:scale-90"
           >
             Image

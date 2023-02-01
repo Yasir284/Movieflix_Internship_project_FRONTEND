@@ -24,10 +24,11 @@ const containerVaritent = {
 };
 
 export default function MovieDetail({ active, setActive }) {
-  const { profile } = useContext(UserContext);
+  const { profile, setLoading } = useContext(UserContext);
   const { handleWishlist } = useContext(MovieContext);
 
   const updateWishlist = async () => {
+    setLoading(true);
     let updatedMovie = await handleWishlist(active.movie);
 
     active.movie = updatedMovie;
@@ -36,7 +37,7 @@ export default function MovieDetail({ active, setActive }) {
   return (
     <motion.div
       {...containerVaritent}
-      className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center overflow-y-auto bg-black bg-opacity-5 text-white backdrop-blur-sm md:p-2"
+      className="fixed top-0 left-0 z-40 flex h-full w-full items-center justify-center overflow-y-auto bg-black bg-opacity-5 text-white backdrop-blur-sm md:p-2"
     >
       <div className="relative h-fit bg-[#1f1f1f] px-4 py-10 md:px-20">
         {/* Close button */}
@@ -80,7 +81,7 @@ export default function MovieDetail({ active, setActive }) {
         <div className="flex flex-row justify-center gap-3 md:justify-between">
           <img
             className="hidden h-[21.25rem] w-[14rem] shadow-md shadow-black lg:block"
-            src={active.movie?.image?.secure_url}
+            src={active.movie.image ? active.movie?.image?.secure_url : ""}
             alt={active.movie.name + "poster"}
           />
 
@@ -106,7 +107,7 @@ export default function MovieDetail({ active, setActive }) {
 
           {/* Streaming platform */}
           <div className="order-1 col-span-full flex flex-col gap-4 md:order-none md:gap-2 lg:col-span-1 lg:pl-20">
-            <div className="rounded-sm bg-[#f5c518] text-black">
+            <div className="rounded-sm bg-[#f5c518] text-black  transition-all duration-200 ease-in-out active:scale-90">
               <a
                 href={active.movie.streamingPlatform}
                 target="_blank"
@@ -129,7 +130,7 @@ export default function MovieDetail({ active, setActive }) {
             {/* Watchlist button */}
             <button
               onClick={updateWishlist}
-              className="flex flex-row items-center gap-3 rounded-sm bg-[#313131] py-2 px-4"
+              className="flex flex-row items-center gap-3 rounded-sm bg-[#313131] py-2 px-4 transition-all duration-200 ease-in-out active:scale-90"
             >
               {profile &&
               active.movie.wishlist.findIndex(
