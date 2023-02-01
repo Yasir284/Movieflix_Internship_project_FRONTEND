@@ -50,7 +50,7 @@ function App() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [search, setSearch] = useState(null);
+  const [search, setSearch] = useState();
 
   const [movies, dispatch] = useReducer(MovieReducer, []);
 
@@ -72,7 +72,7 @@ function App() {
 
       dispatch({
         type: GET_MOVIES,
-        payload: { movies: data.movies },
+        payload: { movies: data.movies, img_width: 208, img_height: 320 },
       });
       setLoading(false);
     } catch (err) {
@@ -217,7 +217,7 @@ function App() {
           categoryList,
         }}
       >
-        <AnimatePresence exitBeforeEnter>
+        <AnimatePresence mode="wait">
           <Suspense fallback={<Loader />}>
             <Routes location={location} key={location}>
               <Route path="/" element={<Navigate replace to={"/home"} />} />
@@ -248,8 +248,5 @@ function App() {
     </UserContext.Provider>
   );
 }
-
-// TODO : To make a sidebar that open and closes
-// - Make a MovieSection that shows movies with category and starred movies
 
 export default App;

@@ -5,17 +5,19 @@ import {
   EDIT_MOVIE,
   SEARCH_MOVIE,
 } from "../utils/action.types";
+import imageResizer from "../utils/imageResizer";
 
 const MovieReducer = (state, action) => {
   switch (action.type) {
     // Get movies
     case GET_MOVIES:
-      state = action.payload.movies;
+      state = imageResizer(action.payload.movies);
       break;
 
     // Add movies
     case ADD_MOVIE:
-      state = [...state, action.payload.movie];
+      let newMovie = imageResizer(action.payload.movie);
+      state = [...state, ...newMovie];
       break;
 
     // Delete movies
@@ -25,9 +27,10 @@ const MovieReducer = (state, action) => {
 
     // Edit movies
     case EDIT_MOVIE:
+      let updatedMovie = imageResizer(action.payload.movie);
       state = state.map((e) => {
         if (e._id === action.payload.movie._id) {
-          return action.payload.movie;
+          return updatedMovie;
         }
         return e;
       });
@@ -35,7 +38,7 @@ const MovieReducer = (state, action) => {
 
     // Edit movies
     case SEARCH_MOVIE:
-      state = action.payload.movies;
+      state = imageResizer(action.payload.movies);
       break;
 
     default:

@@ -88,7 +88,7 @@ export default function MovieDetail({ active, setActive }) {
             className="aspect-video w-[350px] shadow-md shadow-black sm:w-[500px] md:w-[600px]"
             // width="600"
             // height="340"
-            src={active.movie.trailerUrl + "?mute=1&loop=1&autoplay=1"}
+            src={active.movie.trailerUrl + "?loop=1&autoplay=1"}
             title="YouTube video player"
             frameborder="0"
             allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
