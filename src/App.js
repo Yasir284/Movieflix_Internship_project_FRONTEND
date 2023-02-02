@@ -26,7 +26,7 @@ const TopRated = lazy(() => import("./components/TopRated"));
 const Watchlist = lazy(() => import("./components/Watchlist"));
 const MainSection = lazy(() => import("./components/MainSection"));
 
-axios.defaults.baseURL = process.env.BASE_URL;
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 axios.defaults.withCredentials = true;
 axios.defaults.headers = {
   Authorization: sessionStorage.getItem("bearerToken"),
