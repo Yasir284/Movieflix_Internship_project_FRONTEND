@@ -71,7 +71,7 @@ export default function MenuBar() {
       active: false,
       handleClick() {
         if (profile) {
-          navigate("/home/wishlist");
+          navigate("/home/watchlist");
           setAcitveId(this.id);
           return;
         }

@@ -224,7 +224,7 @@ function App() {
 
               <Route path="/home" element={<MainSection />}>
                 <Route index element={<HomeSection />} />
-                <Route path="wishlist" element={<Watchlist />} />
+                <Route path="watchlist" element={<Watchlist />} />
                 <Route path="top-rated" element={<TopRated />} />
               </Route>
 
