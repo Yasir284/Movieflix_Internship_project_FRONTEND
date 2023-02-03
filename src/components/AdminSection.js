@@ -1,6 +1,6 @@
 // Dependencies and React hooks
 import axios from "axios";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
@@ -41,32 +41,11 @@ export default function AdminSection() {
     active: false,
     movie: "",
   });
-  const { movies, dispatch } = useContext(MovieContext);
+  const { movies, dispatch, getMovies } = useContext(MovieContext);
   const { setLoading } = useContext(UserContext);
 
   const searchRef = useRef();
   const categoryRef = useRef();
-
-  const getMovies = async (dispatch, setLoading) => {
-    setLoading(true);
-
-    try {
-      const { data } = await axios.post("/movie/get");
-
-      dispatch({
-        type: GET_MOVIES,
-        payload: { movies: data.movies },
-      });
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      toast("Error in getting movies", { type: "error" });
-    }
-  };
-
-  useEffect(() => {
-    getMovies(dispatch, setLoading);
-  }, [dispatch, setLoading]);
 
   // Filter movies based on category
   const filterMovies = async (category) => {
@@ -166,7 +145,7 @@ export default function AdminSection() {
               </form>
 
               <div className="flex w-full flex-row flex-wrap justify-between">
-                <NavLink to={"/home"}>
+                <NavLink onClick={() => getMovies(dispatch)} to={"/home"}>
                   <div className="group flex flex-row items-center gap-2 rounded-3xl border-2 border-black-400 py-2 px-3 text-black-400 transition-all duration-200 ease-in-out hover:border-white hover:text-white">
                     <MdKeyboardArrowLeft
                       size="1.5rem"

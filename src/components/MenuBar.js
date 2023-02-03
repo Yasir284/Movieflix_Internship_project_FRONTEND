@@ -39,8 +39,16 @@ const contarientVarient = {
 };
 
 export default function MenuBar() {
-  const { categories, search, setSearch, searchMovies, categoryList } =
-    useContext(MovieContext);
+  const {
+    dispatch,
+    getMovies,
+    categories,
+    setCategories,
+    search,
+    setSearch,
+    searchMovies,
+    categoryList,
+  } = useContext(MovieContext);
   const { profile, setProfile, setLoading } = useContext(UserContext);
 
   const [activeSideBar, setActiveSidebar] = useState(true);
@@ -104,6 +112,8 @@ export default function MenuBar() {
       name: "Admin Dashboard",
       active: false,
       handleClick() {
+        setCategories([]);
+        getMovies(dispatch);
         navigate("/admin");
         setAcitveId(this.id);
       },

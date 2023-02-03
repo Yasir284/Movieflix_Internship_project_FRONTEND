@@ -50,7 +50,7 @@ function App() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
 
   const [movies, dispatch] = useReducer(MovieReducer, []);
 
@@ -72,7 +72,7 @@ function App() {
 
       dispatch({
         type: GET_MOVIES,
-        payload: { movies: data.movies, img_width: 208, img_height: 320 },
+        payload: { movies: data.movies },
       });
       setLoading(false);
     } catch (err) {
@@ -206,6 +206,7 @@ function App() {
         value={{
           movies,
           dispatch,
+          getMovies,
           handleWishlist,
           addToWishlist,
           removeFromWishlist,

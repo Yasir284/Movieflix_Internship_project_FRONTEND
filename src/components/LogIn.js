@@ -10,6 +10,7 @@ import { MdArrowBack, MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 // Contexts
 import { UserContext } from "../contexts/UserContext";
+import { MovieContext } from "../contexts/MovieContext";
 
 // Framer motion animation varients
 const buttonVaritent = {
@@ -25,6 +26,7 @@ export default function LogIn() {
 
   const navigate = useNavigate();
 
+  const { dispatch, getMovies, setCategories } = useContext(MovieContext);
   const { setProfile, setLoading } = useContext(UserContext);
 
   // Login function
@@ -54,6 +56,8 @@ export default function LogIn() {
 
       setLoading(false);
       if (data.user?.role === "ADMIN") {
+        setCategories([]);
+        getMovies(dispatch);
         return navigate("/admin");
       }
 
