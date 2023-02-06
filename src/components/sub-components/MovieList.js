@@ -35,7 +35,7 @@ export default function MovieList({ movies, setMovieDetails }) {
           >
             <div className="group relative h-80 w-52 rounded-3xl">
               <img
-                className="absolute bottom-0 right-0 -z-10 h-full w-full rounded-3xl"
+                className="absolute bottom-0 right-0 -z-10 rounded-3xl"
                 src={movie.image?.secure_url}
                 alt={"image-" + i}
               />
