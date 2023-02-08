@@ -200,7 +200,7 @@ function App() {
     <UserContext.Provider value={{ profile, setProfile, loading, setLoading }}>
       <ToastContainer position="top-right" theme="dark" autoClose="1000" />
       <Navbar />
-      <Loader active={loading} />
+      {loading && <Loader />}
 
       <MovieContext.Provider
         value={{
