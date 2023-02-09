@@ -37,7 +37,7 @@ export default function MovieList({ movies, setMovieDetails }) {
               <img
                 className="absolute bottom-0 right-0 -z-10 rounded-3xl"
                 src={movie.image?.secure_url}
-                alt={"image-" + i}
+                alt={movie.name + "movie image"}
               />
 
               <div className="hidden h-full w-full flex-col justify-between rounded-3xl bg-black bg-opacity-25 py-4 backdrop-blur-[1px] backdrop-filter transition-all duration-200 ease-in-out group-hover:flex">
@@ -46,7 +46,10 @@ export default function MovieList({ movies, setMovieDetails }) {
                     {movie.name}
                   </h2>
 
-                  <div className="ml-2 flex w-14 flex-row items-center gap-1 rounded-full bg-white py-1 px-2 text-xs font-semibold text-black">
+                  <div
+                    title="Movie IMDb rating"
+                    className="ml-2 flex w-14 flex-row items-center gap-1 rounded-full bg-white py-1 px-2 text-xs font-semibold text-black"
+                  >
                     <FaStar className="text-yellow-500" size="1rem" />
                     <p>{movie?.rating.toFixed(1)}</p>
                   </div>
@@ -56,6 +59,7 @@ export default function MovieList({ movies, setMovieDetails }) {
                   <div className="mt-2 flex flex-row justify-between text-xs">
                     {/* Movie Details */}
                     <button
+                      title="Movie details button"
                       onClick={() => setMovieDetails({ active: true, movie })}
                       className="rounded-3xl border border-transparent bg-my-red py-1 px-4 font-semibold transition-all duration-200 ease-in-out hover:border-white hover:bg-transparent active:scale-90"
                     >
@@ -77,9 +81,15 @@ export default function MovieList({ movies, setMovieDetails }) {
                       movie.wishlist.findIndex(
                         (e) => e.userId === profile._id
                       ) !== -1 ? (
-                        <MdBookmark size="1.5rem" />
+                        <MdBookmark
+                          title="Click to remove movie from the watchlist"
+                          size="1.5rem"
+                        />
                       ) : (
-                        <MdBookmarkBorder size="1.5rem" />
+                        <MdBookmarkBorder
+                          title="Click to add movie in the watchlist"
+                          size="1.5rem"
+                        />
                       )}
                     </button>
                   </div>

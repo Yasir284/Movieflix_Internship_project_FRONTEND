@@ -197,21 +197,23 @@ export default function MenuBar() {
                     <li
                       key={list.id}
                       onClick={() => list.handleClick()}
-                      className={`my-2 flex cursor-pointer flex-row items-end justify-start gap-2 rounded-sm border-r-2 border-transparent py-1 px-2 transition-all duration-300 ease-out hover:bg-black-900 ${
+                      className={`my-2 cursor-pointer border-r-2 border-transparent py-1 px-2 transition-all duration-300 ease-out hover:bg-black-900 ${
                         activeId === list.id
                           ? "border-my-red bg-black-900 font-semibold text-white"
                           : "text-white md:text-black-400"
                       }`}
                     >
-                      {activeId === list.id ? (
-                        <list.activeIcon
-                          size={list.size}
-                          className="text-my-red"
-                        />
-                      ) : (
-                        <list.icon size={list.size} />
-                      )}
-                      <span>{list.name}</span>
+                      <button className="flex flex-row items-end justify-start gap-2 rounded-sm">
+                        {activeId === list.id ? (
+                          <list.activeIcon
+                            size={list.size}
+                            className="text-my-red"
+                          />
+                        ) : (
+                          <list.icon size={list.size} />
+                        )}
+                        <span>{list.name}</span>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -231,14 +233,14 @@ export default function MenuBar() {
                     }}
                     className="col-span-1 transition-all duration-200 ease-in-out active:scale-90"
                   >
-                    <div
-                      className={`flex cursor-pointer flex-row items-center justify-between rounded-3xl px-3 py-2 text-xs font-light transition-all duration-300 ease-in-out ${
+                    <button
+                      className={`flex w-full cursor-pointer flex-row items-center justify-between rounded-3xl px-3 py-2 text-xs font-light transition-all duration-300 ease-in-out hover:bg-my-red ${
                         categories.includes(list) ? "bg-my-red" : "bg-black-900"
                       }`}
                     >
                       <p>{list}</p>
                       {categories.includes(list) ? <MdDone /> : <MdAdd />}
-                    </div>
+                    </button>
                   </li>
                 ))}
               </ul>

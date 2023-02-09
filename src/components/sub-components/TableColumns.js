@@ -92,8 +92,9 @@ export default function TableColumns({ movie, index, setToggleEditMovie }) {
       </td>
       <td className="relative p-3">
         <div className="flex flex-row flex-wrap gap-2">
-          <div title="Movie description">
+          <button>
             <MdInfo
+              title="Click to see Movie description"
               onClick={() => setActive(!active)}
               size="1.75rem"
               className="transition-all duration-200 ease-in-out active:scale-90"
@@ -106,10 +107,10 @@ export default function TableColumns({ movie, index, setToggleEditMovie }) {
                 {movie.description}
               </motion.p>
             )}
-          </div>
+          </button>
 
-          <p
-            title="Edit movie"
+          <button
+            title="Click to Edit movie"
             onClick={() => setToggleEditMovie({ active: true, movie: movie })}
             className="transition-all duration-200 ease-in-out active:scale-90"
           >
@@ -117,10 +118,10 @@ export default function TableColumns({ movie, index, setToggleEditMovie }) {
               size="1.75rem"
               className="rounded-md bg-green-500 p-1 text-center"
             />
-          </p>
+          </button>
 
-          <p
-            title="Delete movie"
+          <button
+            title="Click to Delete movie"
             onClick={deleteMovie}
             className="transition-all duration-200 ease-in-out active:scale-90"
           >
@@ -128,7 +129,7 @@ export default function TableColumns({ movie, index, setToggleEditMovie }) {
               size="1.75rem"
               className="rounded-md bg-red-500 p-1 text-center"
             />
-          </p>
+          </button>
         </div>
       </td>
     </>
