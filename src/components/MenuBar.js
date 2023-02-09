@@ -51,7 +51,7 @@ export default function MenuBar() {
   } = useContext(MovieContext);
   const { profile, setProfile, setLoading } = useContext(UserContext);
 
-  const [activeSideBar, setActiveSidebar] = useState(true);
+  const [activeSideBar, setActiveSidebar] = useState(window.innerWidth > 768);
 
   const navigate = useNavigate();
 
