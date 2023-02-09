@@ -21,6 +21,7 @@ export default function SignUp() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const nameRef = useRef();
+  const [passwordError, setPasswordError] = useState(false);
 
   const [hide, setHide] = useState(false);
 
@@ -37,6 +38,12 @@ export default function SignUp() {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
+
+    if (passwordRef.current.value.length < 8) {
+      setPasswordError(true);
+      setLoading(false);
+      return;
+    }
 
     if (!payload.name || !payload.email || !payload.password) {
       return toast("All fields are mandatory", { type: "warning" });
@@ -125,6 +132,11 @@ export default function SignUp() {
               placeholder="Enter password"
               className="w-full rounded-md border border-gray-700 bg-black-500 px-3 py-2 text-gray-100"
             />
+            {passwordError && (
+              <label className="text-xs text-red-600">
+                Password must be atleast of 8 characters.
+              </label>
+            )}
           </div>
         </div>
 
