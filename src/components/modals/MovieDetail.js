@@ -24,11 +24,10 @@ const containerVaritent = {
 };
 
 export default function MovieDetail({ active, setActive }) {
-  const { profile, setLoading } = useContext(UserContext);
+  const { profile } = useContext(UserContext);
   const { handleWishlist } = useContext(MovieContext);
 
   const updateWishlist = async () => {
-    setLoading(true);
     let updatedMovie = await handleWishlist(active.movie);
 
     active.movie = updatedMovie;

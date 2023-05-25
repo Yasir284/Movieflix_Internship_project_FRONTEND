@@ -132,6 +132,7 @@ function App() {
 
   // Wishlist function
   const handleWishlist = (movie) => {
+    if (!profile) return toast("Login / Signup first", { type: "warning" });
     return movie.wishlist.findIndex((e) => e.userId === profile._id) !== -1
       ? removeFromWishlist(movie._id)
       : addToWishlist(movie._id);
