@@ -58,10 +58,13 @@ export default function LogIn() {
       if (data.user?.role === "ADMIN") {
         setCategories([]);
         getMovies(dispatch);
-        return navigate("/admin");
+        navigate("/admin");
+        window.location.reload(false);
+        return;
       }
 
       navigate("/");
+      window.location.reload(false);
     } catch (err) {
       setLoading(false);
       return toast("Invalid Credentials", { type: "error" });

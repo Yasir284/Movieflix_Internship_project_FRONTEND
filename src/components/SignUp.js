@@ -62,6 +62,7 @@ export default function SignUp() {
       toast("Logged in successfully", { type: "success" });
       setLoading(false);
       navigate("/");
+      window.location.reload(false);
     } catch (err) {
       setLoading(false);
       return toast("Invalid Credentials", { type: "error" });
