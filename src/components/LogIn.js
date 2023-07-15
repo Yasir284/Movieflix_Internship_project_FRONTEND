@@ -32,7 +32,6 @@ export default function LogIn() {
   // Login function
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     const payload = {
       email: emailRef.current.value,
@@ -43,6 +42,7 @@ export default function LogIn() {
       return toast("All fields are mandatory", { type: "warning" });
     }
 
+    setLoading(true);
     try {
       const { data } = await axios.post("/auth/login", payload);
 
@@ -93,6 +93,7 @@ export default function LogIn() {
               id="email"
               placeholder="leroy@jenkins.com"
               className="w-full rounded-md border border-gray-700 bg-black-500 px-3 py-2 text-gray-100"
+              required
             />
           </div>
 
@@ -119,6 +120,7 @@ export default function LogIn() {
               id="password"
               placeholder="Enter password"
               className="w-full rounded-md border border-gray-700 bg-black-500 px-3 py-2 text-gray-100"
+              required
             />
           </div>
         </div>

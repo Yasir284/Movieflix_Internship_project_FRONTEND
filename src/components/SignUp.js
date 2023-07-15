@@ -32,7 +32,6 @@ export default function SignUp() {
   // Signup function
   const handleSignUp = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const payload = {
       name: nameRef.current.value,
       email: emailRef.current.value,
@@ -41,7 +40,6 @@ export default function SignUp() {
 
     if (passwordRef.current.value.length < 8) {
       setPasswordError(true);
-      setLoading(false);
       return;
     }
 
@@ -49,6 +47,7 @@ export default function SignUp() {
       return toast("All fields are mandatory", { type: "warning" });
     }
 
+    setLoading(true);
     try {
       const { data } = await axios.post("/auth/signup", payload);
       sessionStorage.setItem("bearerToken", `Bearer ${data.token}`);
@@ -91,6 +90,7 @@ export default function SignUp() {
               id="name"
               placeholder="Enter fullname"
               className="w-full rounded-md border border-gray-700 bg-black-500 px-3 py-2 text-gray-100"
+              required
             />
           </div>
 
@@ -106,6 +106,7 @@ export default function SignUp() {
               id="email"
               placeholder="leroy@jenkins.com"
               className="w-full rounded-md border border-gray-700 bg-black-500 px-3 py-2 text-gray-100"
+              required
             />
           </div>
 
@@ -132,6 +133,7 @@ export default function SignUp() {
               id="password"
               placeholder="Enter password"
               className="w-full rounded-md border border-gray-700 bg-black-500 px-3 py-2 text-gray-100"
+              required
             />
             {passwordError && (
               <label className="text-xs text-red-600">
